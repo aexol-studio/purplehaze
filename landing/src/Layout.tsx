@@ -9,7 +9,10 @@ export const Layout: React.FC<{
   return (
     <div className="flex mx-auto h-full">
       <div className="py-10 px-20 bg-gray-100 h-full w-80">
-        <a className="block py-4 text-lg text-purple-900 font-black" href="/">
+        <a
+          className="block py-4 text-lg text-purple-900 font-black"
+          href={`${prefix}/`}
+        >
           Purple haze
         </a>
         {routes.map((r) => (

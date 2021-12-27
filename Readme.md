@@ -1,7 +1,7 @@
 # Purple haze
 
 [![NPM Version](https://img.shields.io/npm/v/purplehaze.svg?style=flat)]()
-![Build](https://github.com/graphql-editor/purplehaze/actions/workflows/release.yml/badge.svg)
+![Build](https://github.com/aexol-studio/purplehaze/actions/workflows/release.yml/badge.svg)
 
 Inspired by generative programming and weed :). So I was learning Elm language at home usually in the evening and now I am missing all this generative stuff from Elm libs in TS.
 
