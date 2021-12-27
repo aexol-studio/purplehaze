@@ -1,0 +1,56 @@
+<!DOCTYPE html><html>
+    <head>
+      <meta charset="UTF-8">
+      
+      <script type="module" src="./../page.js"></script><script type="module">
+        import { hydrate } from "./../page.js";
+        hydrate({"content":{"content":"\n### File must contain export default\n\nString returned in contained in file export default is generated via SSG phase.\n\n```js\nimport { html } from './ssg/basic.js';\nexport default () => {\n  return html`\n    <div>Hello world</div>\n  `;\n};\n```\n\nTo have syntax coloring in html pleas install appropriate litelement extension for your IDE.\n\n### Config\n\nConfig file can be generated or created manually. It should contain all the following values.\n\n```json\n{\n  \"graphql\": {\n    \"feature-mole\": {\n      \"url\": \"https://faker.graphqleditor.com/explore-projects/feature-mole/graphql\"\n    }\n  },\n  \"in\": \"./pages\",\n  \"out\": \"./out\",\n  \"websocketPort\": 1416,\n  \"port\": 8082\n}\n```\n\n#### Typescript\n\nTurn on typescript support URL imports also works here. Of course you can still import relative modules.\n\n```json\n{\n  \"graphql\": {\n    \"feature-mole\": {\n      \"url\": \"https://faker.graphqleditor.com/explore-projects/feature-mole/graphql\"\n    }\n  },\n  \"in\": \"./pages\",\n  \"out\": \"./out\",\n  \"websocketPort\": 1416,\n  \"port\": 8082,\n  \"mode\": \"typescript\"\n}\n```\n","data":{"link":"how-it-works","title":"How it works"},"excerpt":""},"routes":[{"link":"installation","title":"Installation"},{"link":"how-it-works","title":"How it works"},{"link":"getting-started","title":"Getting Started"}],"activeRoute":"how-it-works"})
+      </script>
+
+          <link rel="stylesheet" href="../tw.css" />
+          <title>Purple haze docs</title>
+        
+    </head>
+    <body>
+      <div class="flex mx-auto h-full"><div class="py-10 px-20 bg-gray-100 h-full w-80"><a class="block py-4 text-lg text-purple-900 font-black" href="/">Purple haze</a><a class="block py-4 text-md" href="/page/installation.html">Installation</a><a class="block py-4 text-md text-purple-900" href="/page/how-it-works.html">How it works</a><a class="block py-4 text-md" href="/page/getting-started.html">Getting Started</a></div><div class="container mx-auto p-10 h-full overflow-auto"><div class="prose"><h3>File must contain export default</h3>
+<p>String returned in contained in file export default is generated via SSG phase.</p>
+<pre><code class="language-js">import { html } from './ssg/basic.js';
+export default () =&gt; {
+  return html`
+    &lt;div&gt;Hello world&lt;/div&gt;
+  `;
+};
+</code></pre>
+<p>To have syntax coloring in html pleas install appropriate litelement extension for your IDE.</p>
+<h3>Config</h3>
+<p>Config file can be generated or created manually. It should contain all the following values.</p>
+<pre><code class="language-json">{
+  "graphql": {
+    "feature-mole": {
+      "url": "https://faker.graphqleditor.com/explore-projects/feature-mole/graphql"
+    }
+  },
+  "in": "./pages",
+  "out": "./out",
+  "websocketPort": 1416,
+  "port": 8082
+}
+</code></pre>
+<h4>Typescript</h4>
+<p>Turn on typescript support URL imports also works here. Of course you can still import relative modules.</p>
+<pre><code class="language-json">{
+  "graphql": {
+    "feature-mole": {
+      "url": "https://faker.graphqleditor.com/explore-projects/feature-mole/graphql"
+    }
+  },
+  "in": "./pages",
+  "out": "./out",
+  "websocketPort": 1416,
+  "port": 8082,
+  "mode": "typescript"
+}
+</code></pre>
+</div></div></div>
+    </body>
+  </html>
