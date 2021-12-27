@@ -1,0 +1,75 @@
+{
+  "name": "purplehaze",
+  "version": "0.0.1",
+  "description": "Bundler working in browser. Generating lots of stuff to help making frontend. Elm pages inspired",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "ttsc --build tsconfig.build.json",
+    "watch": "ttsc --watch --project tsconfig.build.json",
+    "purplehaze-sandbox:watch": "cd examples/sandbox && node ../../lib/CLI.js",
+    "purplehaze-sandbox:build": "cd examples/sandbox && node ../../lib/CLI.js --build",
+    "purplehaze-pokemon:watch": "cd examples/pokemon && node ../../lib/CLI.js",
+    "purplehaze-pokemon:build": "cd examples/pokemon && node ../../lib/CLI.js --build",
+    "purplehaze-typescript:watch": "cd examples/typescript && node ../../lib/CLI.js",
+    "purplehaze-typescript:build": "cd examples/typescript && node ../../lib/CLI.js --build",
+    "purplehaze-typescript-react:watch": "cd examples/typescript-react && node ../../lib/CLI.js",
+    "purplehaze-typescript-react:build": "cd examples/typescript-react && node ../../lib/CLI.js --build",
+    "landing:watch": "cd landing && node ../lib/CLI.js",
+    "landing:build": "cd landing && node ../lib/CLI.js --build",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aexol-studio/purplehaze.git"
+  },
+  "keywords": [
+    "react",
+    "graphql"
+  ],
+  "bin": {
+    "purplehaze": "lib/CLI.js"
+  },
+  "author": "Aexol <aexol@aexol.com> (http://aexol.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aexol-studio/purplehaze/issues"
+  },
+  "homepage": "https://github.com/aexol-studio/purplehaze#readme",
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "chokidar": "^3.5.1",
+    "chrome-remote-interface": "^0.30.0",
+    "dotenv": "^9.0.0",
+    "esbuild": "^0.11.23",
+    "graphql-js-tree": "0.0.3",
+    "graphql-zeus": "^4.0.3",
+    "gray-matter": "^4.0.3",
+    "live-server": "^1.2.1",
+    "node-fetch": "^2.6.1",
+    "pretty-error": "^3.0.3",
+    "puppeteer": "^8.0.0",
+    "remarkable": "^2.0.1",
+    "typescript": "^4.3.2",
+    "ws": "^7.4.4",
+    "yargs": "^16.2.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.22",
+    "@types/live-server": "^1.2.0",
+    "@types/node-fetch": "^2.5.9",
+    "@types/websocket": "^1.0.2",
+    "@types/ws": "^7.4.1",
+    "@typescript-eslint/eslint-plugin": "^2.12.0",
+    "@typescript-eslint/parser": "^2.12.0",
+    "cypress": "^6.8.0",
+    "eslint": "^6.7.2",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "jest": "^26.6.3",
+    "prettier": "^1.19.1",
+    "ts-jest": "^26.5.4",
+    "ts-node": "^9.1.1",
+    "ttypescript": "^1.5.12",
+    "typescript-transform-paths": "^2.2.3"
+  }
+}

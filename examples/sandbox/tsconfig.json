@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "baseUrl": "./",
+    "paths": {
+      "https://cdn.skypack.dev/remarkable": [
+        "pages/typings/remarkable/index.d.ts"
+      ]
+    }
+  },
+  "include": [
+    "./pages/**/*.js",
+    "./pages/purplehaze.d.ts"
+  ]
+}

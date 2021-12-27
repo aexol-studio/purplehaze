@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "target": "esnext",
+    "module": "ES2020",
+    "jsx": "react",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
+    "noEmit": true,
+    "baseUrl": "",
+    "paths": {
+      "https://cdn.skypack.dev/remarkable": [
+        "src/typings/remarkable/index.d.ts"
+      ],
+      "https://cdn.skypack.dev/react": [
+        "src/typings/react/index.d.ts"
+      ],
+      "https://faker.graphqleditor.com/explore-projects/feature-mole/graphql\"\\n    }\\n  },\\n  \"in\": \"./pages\",\\n  \"out\": \"./out\",\\n  \"websocketPort\": 1416,\\n  \"port\": 8082,\\n  \"mode\": \"typescript\"\\n}\\n```\\n": [
+        "src/typings/out\",\\n  \"websocketPort\": 1416,\\n  \"port\": 8082,\\n  \"mode\": \"typescript\"\\n}\\n```\\n/index.d.ts"
+      ],
+      "https://cdn.skypack.dev/react-dom": [
+        "src/typings/react-dom/index.d.ts"
+      ]
+    }
+  },
+  "include": [
+    "./src/**/*.tsx",
+    "./src/**/*.jsx",
+    "./src/**/*.ts",
+    "./src/**/*.js",
+    "./src/purplehaze.d.ts"
+  ]
+}

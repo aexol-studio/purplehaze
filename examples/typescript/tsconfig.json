@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "target": "esnext",
+    "module": "ES2020",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
+    "noEmit": true,
+    "baseUrl": "./",
+    "paths": {
+      "https://cdn.skypack.dev/hybrids": ["pages/typings/hybrids/index.d.ts"],
+      "https://cdn.skypack.dev/remarkable": [
+        "pages/typings/remarkable/index.d.ts"
+      ]
+    }
+  },
+  "include": [
+    "./pages/**/*.tsx",
+    "./pages/**/*.jsx",
+    "./pages/**/*.ts",
+    "./pages/**/*.js",
+    "./pages/purplehaze.d.ts"
+  ]
+}
