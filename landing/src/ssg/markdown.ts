@@ -7,6 +7,11 @@ export const htmlContent = {
         },
         "excerpt": ""
     },
+    "markdown/Routing.md": {
+        "content": "",
+        "data": {},
+        "excerpt": ""
+    },
     "markdown/Installation.md": {
         "content": "\nInstall globally\n\n```sh\nnpm i -g purplehaze\n```\n",
         "data": {
@@ -29,6 +34,16 @@ export const htmlContent = {
             "link": "getting-started",
             "title": "Getting Started"
         },
+        "excerpt": ""
+    },
+    "markdown/CSS.md": {
+        "content": "",
+        "data": {},
+        "excerpt": ""
+    },
+    "markdown/Assets.md": {
+        "content": "",
+        "data": {},
         "excerpt": ""
     }
 } as const
