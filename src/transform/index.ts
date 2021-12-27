@@ -2,15 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import { bundle } from '@/transform/module';
 import { ConfigFile } from '@/config';
-import {
-  GenerateGlobalTypings,
-  md,
-  basicFunctions,
-  envsTypings,
-} from '@/transform/fn';
-import { message } from '@/console';
+import { GenerateGlobalTypings, md, basicFunctions } from '@/transform/fn';
+import { calcTime, message } from '@/console';
 import { downloadTypings } from '@/typeFetcher';
-import matter from 'gray-matter';
 import {
   fileWriteRecuirsiveSync,
   isDirectory,
@@ -20,9 +14,10 @@ import {
   fileRegex,
   isMd,
 } from '@/fsAddons';
-import ts from 'typescript';
-import { transform } from 'esbuild';
 import { pathIn, pathOut, pathSsg } from '@/paths';
+import { transformMarkdownFiles } from '@/transform/transformers/markdown';
+import { transformTsx } from '@/transform/transformers/tsx';
+import { envTransformer } from '@/transform/transformers/env';
 
 const getFiles = (dir: string) => {
   const result = [];
@@ -106,11 +101,7 @@ export const generateBasicTypingsFiles = async (config: ConfigFile) => {
   fileWriteRecuirsiveSync(ssgPath('md.d.ts'), md.typings);
   fileWriteRecuirsiveSync(ssgPath('basic.js'), basicFunctions.code);
   fileWriteRecuirsiveSync(ssgPath('basic.d.ts'), basicFunctions.typings);
-
-  fileWriteRecuirsiveSync(
-    pathIn(config)('purplehaze.d.ts'),
-    envsTypings(config),
-  );
+  envTransformer(config);
 };
 
 export const generateTypingsFiles = async ({
@@ -131,72 +122,20 @@ export const generateTypingsFiles = async ({
 };
 
 export const transformFiles = async ({ config }: { config: ConfigFile }) => {
-  const ssgPath = pathSsg(config);
+  const { end } = calcTime('Build time', 'blueBright');
   const mdFiles = await readFiles(isMd)(config.in);
   if (mdFiles.length > 0) {
-    const generatedMdLib: Record<
-      string,
-      Pick<ReturnType<typeof matter>, 'content' | 'data' | 'excerpt'>
-    > = {};
-    try {
-      await Promise.all(
-        mdFiles.map(async (mdFile) => {
-          const m = matter(fs.readFileSync(pathIn(config)(mdFile)));
-          generatedMdLib[mdFile] = {
-            content: m.content,
-            data: m.data,
-            excerpt: m.excerpt,
-          };
-        }),
-      );
-    } catch (error) {
-      if (error instanceof Error) {
-        message(error.message, 'red');
-      }
-      return;
-    }
-    fileWriteRecuirsiveSync(
-      ssgPath('markdown.ts'),
-      `export const htmlContent = ${JSON.stringify(
-        generatedMdLib,
-        null,
-        4,
-      )} as const`,
-    );
+    await transformMarkdownFiles(config)(mdFiles);
   }
+
   const tsFiles = await readFiles(isTSFile)(config.in);
   if (tsFiles.length > 0) {
-    const tsconfig = JSON.parse(
-      fs.readFileSync('./tsconfig.json').toString('utf-8'),
-    );
-    try {
-      await Promise.all(
-        tsFiles.map(async (tsFile) => {
-          const transpiled = await transpileTS(
-            fs.readFileSync(pathIn(config)(tsFile)).toString('utf-8'),
-            tsFile.endsWith('tsx') ? 'tsx' : 'ts',
-            tsconfig,
-          );
-          const jsFileName = pathIn(config)(tsFile.replace(/\.tsx?$/, '.js'));
-          fileWriteRecuirsiveSync(jsFileName, transpiled.code);
-        }),
-      );
-    } catch (error) {
-      if (error instanceof Error) {
-        message(error.message, 'red');
-      }
-      return;
-    }
+    await transformTsx(config)(tsFiles);
   }
-  const files = await readFiles(isJSFile)(config.in);
-  message('Sending code to browser', 'yellowBright');
-  const htmlFiles = (
-    await Promise.all(
-      files.map((f) => injectHtmlFile({ fileToTransform: f, config })),
-    )
-  ).filter((f) => f.code);
-  message('Code render successful', 'greenBright');
-  const rf = files.map((f) => ({
+
+  const jsFiles = await readFiles(isJSFile)(config.in);
+
+  const rf = jsFiles.map((f) => ({
     name: f,
     path: pathOut(config)(f),
     content: fs.readFileSync(pathIn(config)(f)),
@@ -205,10 +144,20 @@ export const transformFiles = async ({ config }: { config: ConfigFile }) => {
     config,
     rf.map((r) => r.content.toString('utf-8')),
   );
-  message(`Writing out ${rf.length} files.`, 'yellow');
-  rf.forEach((f) => {
-    fileWriteRecuirsiveSync(pathOut(config)(f.name), f.content);
-  });
+  message('Sending code to browser', 'yellowBright');
+  await generateHtmlFiles(config)(jsFiles);
+  message('Code render successful', 'greenBright');
+  end();
+};
+
+export const generateHtmlFiles = (config: ConfigFile) => async (
+  jsFiles: string[],
+) => {
+  const htmlFiles = (
+    await Promise.all(
+      jsFiles.map((f) => injectHtmlFile({ fileToTransform: f, config })),
+    )
+  ).filter((f) => f.code);
   message(`Writing out ${htmlFiles.length} pages.`, 'yellow');
   htmlFiles.forEach(({ name, code }) => {
     if (code?.pages) {
@@ -227,10 +176,8 @@ export const transformFiles = async ({ config }: { config: ConfigFile }) => {
 };
 
 export const copyFile = (config: ConfigFile) => (relativeFilePath: string) => {
-  fileWriteRecuirsiveSync(
-    pathOut(config)(relativeFilePath),
-    fs.readFileSync(pathIn(config)(relativeFilePath)),
-  );
+  const f = fs.readFileSync(pathIn(config)(relativeFilePath));
+  fileWriteRecuirsiveSync(pathOut(config)(relativeFilePath), f);
 };
 
 export const copyStaticFiles = (config: ConfigFile) => {
@@ -247,16 +194,4 @@ export const cleanBuild = (config: ConfigFile) => {
   if (fs.existsSync(config.out)) {
     fs.rmSync(config.out, { recursive: true });
   }
-};
-
-export const transpileTS = (
-  code: string,
-  loader: 'ts' | 'tsx',
-  options: ts.TranspileOptions,
-) => {
-  return transform(code, {
-    tsconfigRaw: JSON.stringify(options),
-    loader,
-    format: 'esm',
-  });
 };

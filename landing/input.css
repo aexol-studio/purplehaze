@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-.markdownContent h1 {
-  @apply font-bold text-3xl;
+.nicebtn {
+  @apply px-8 bg-purple-500 text-white block py-4 rounded font-bold text-center mt-10 cursor-pointer hover:bg-purple-400;
 }
 
 body,

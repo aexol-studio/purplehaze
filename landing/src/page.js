@@ -7,6 +7,7 @@ import {routes} from "./markdownRoutes.js";
 import {html} from "./ssg/basic.js";
 const CustomPage = ({data: data2}) => {
   return /* @__PURE__ */ React.createElement(Layout, {
+    prefix: data2.prefix,
     activeRoute: data2.activeRoute,
     routes: data2.routes
   }, /* @__PURE__ */ React.createElement("div", {
@@ -17,7 +18,8 @@ const CustomPage = ({data: data2}) => {
 const data = () => {
   return {
     htmlContent,
-    routes: routes(htmlContent)
+    routes: routes(htmlContent),
+    prefix: ssg.envs.PATH_PREFIX
   };
 };
 const hydrate = async (staticData) => ReactDOM.hydrate(/* @__PURE__ */ React.createElement(CustomPage, {
@@ -30,7 +32,8 @@ const pages = async (staticData) => {
       data: {
         content: v,
         routes: routes(staticData.htmlContent),
-        activeRoute: v.data.link
+        activeRoute: v.data.link,
+        prefix: staticData.prefix
       }
     }), renderBody);
     return {
@@ -38,7 +41,8 @@ const pages = async (staticData) => {
       data: {
         content: v,
         routes: routes(staticData.htmlContent),
-        activeRoute: v.data.link
+        activeRoute: v.data.link,
+        prefix: staticData.prefix
       },
       slug: v.data.link,
       head: html`

@@ -1,7 +1,14 @@
 #!/usr/bin/env node
-import { build, watch } from './serve';
+import { build } from '@/build';
+import { message } from '@/console';
+import { watch } from '@/watch';
 import * as yargs from 'yargs';
 import { initConfig } from './config';
+process.on('SIGINT', function() {
+  message('Exiting...', 'redBright');
+  process.exit();
+});
+
 const args = yargs
   .usage(
     `

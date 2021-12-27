@@ -12,10 +12,15 @@ const CustomPage: React.FC<{
     content: DataType['htmlContent'][keyof DataType['htmlContent']];
     routes: DataType['routes'];
     activeRoute?: string;
+    prefix?: string;
   };
 }> = ({ data }) => {
   return (
-    <Layout activeRoute={data.activeRoute} routes={data.routes}>
+    <Layout
+      prefix={data.prefix}
+      activeRoute={data.activeRoute}
+      routes={data.routes}
+    >
       <div
         className="prose"
         dangerouslySetInnerHTML={{ __html: md`${data.content.content}` }}
@@ -28,6 +33,7 @@ export const data = () => {
   return {
     htmlContent,
     routes: routes(htmlContent),
+    prefix: ssg.envs.PATH_PREFIX,
   };
 };
 
@@ -37,6 +43,7 @@ export const hydrate = async (staticData: {
   content: DataType['htmlContent'][keyof DataType['htmlContent']];
   routes: DataType['routes'];
   activeRoute?: string;
+  prefix?: string;
 }) => ReactDOM.hydrate(<CustomPage data={staticData} />, document.body);
 
 export const pages = async (staticData: DataType) => {
@@ -50,6 +57,7 @@ export const pages = async (staticData: DataType) => {
             content: v,
             routes: routes(staticData.htmlContent),
             activeRoute: v.data.link,
+            prefix: staticData.prefix,
           }}
         />,
         renderBody,
@@ -60,6 +68,7 @@ export const pages = async (staticData: DataType) => {
           content: v,
           routes: routes(staticData.htmlContent),
           activeRoute: v.data.link,
+          prefix: staticData.prefix,
         },
         slug: v.data.link,
         head: html`

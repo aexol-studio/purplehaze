@@ -9,7 +9,7 @@ import { routes } from './markdownRoutes.js';
 
 const IndexPage: React.FC<{ data: DataType }> = ({ data }) => {
   return (
-    <Layout routes={data.routes}>
+    <Layout prefix={data.prefix} routes={data.routes}>
       <div
         className="prose"
         dangerouslySetInnerHTML={{ __html: md`${data.content.content}` }}
@@ -22,6 +22,7 @@ export const data = () => {
   return {
     content: htmlContent['markdown/index.md'],
     routes: routes(htmlContent),
+    prefix: ssg.envs.PATH_PREFIX,
   };
 };
 

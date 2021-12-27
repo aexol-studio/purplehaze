@@ -1,12 +1,11 @@
 import { TreeToTS } from 'graphql-zeus';
 import { Parser } from 'graphql-js-tree';
-import { parse } from 'dotenv';
-import fs from 'fs';
 // @ts-ignore
 import { Remarkable } from 'remarkable';
 import fetch from 'node-fetch';
 import { ConfigFile } from '@/config';
 import { objectToType } from '@/transform/objectToType';
+import { envLoader } from '@/loaders/env';
 
 export interface DryadFunctionResult {
   body: string;
@@ -54,9 +53,7 @@ export const basicFunctions = {
 export declare const css: (strings: TemplateStringsArray, ...expr: string[]) => string`,
 };
 export const envsTypings = (config: ConfigFile) => {
-  const envs = fs.existsSync('./.env')
-    ? parse(fs.readFileSync('./.env'))
-    : undefined;
+  const envs = envLoader();
   const ssg = {
     envs,
     config,

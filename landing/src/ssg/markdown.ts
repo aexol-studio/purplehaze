@@ -7,11 +7,6 @@ export const htmlContent = {
         },
         "excerpt": ""
     },
-    "markdown/Routing.md": {
-        "content": "",
-        "data": {},
-        "excerpt": ""
-    },
     "markdown/Installation.md": {
         "content": "\nInstall globally\n\n```sh\nnpm i -g purplehaze\n```\n",
         "data": {
@@ -36,14 +31,12 @@ export const htmlContent = {
         },
         "excerpt": ""
     },
-    "markdown/CSS.md": {
-        "content": "",
-        "data": {},
-        "excerpt": ""
-    },
-    "markdown/Assets.md": {
-        "content": "",
-        "data": {},
+    "markdown/EnvironmentVariables.md": {
+        "content": "\nEnvironment variables must be put side by side to `purplehaze.json` in `.env` file.It is available only inside `export default` and `export const head` .\n\nUsage in JS example:\n\n```js\nconst graphQLClient = Chain(ssg.env.HOST, {\n  headers: {\n    Authorization: `Bearer ${ssg.env.TOKEN}`,\n  },\n});\n```\n\nIt is available only inside `export default` and `export const head` function to prevent leaking of secrets.\n",
+        "data": {
+            "link": "env-variables",
+            "title": "Envs"
+        },
         "excerpt": ""
     }
 } as const

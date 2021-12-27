@@ -4,7 +4,8 @@ import ReactDOM from 'https://cdn.skypack.dev/react-dom';
 export const Layout: React.FC<{
   routes: Array<Route>;
   activeRoute?: string;
-}> = ({ children, routes, activeRoute }) => {
+  prefix?: string;
+}> = ({ children, routes, activeRoute, prefix = '' }) => {
   return (
     <div className="flex mx-auto h-full">
       <div className="py-10 px-20 bg-gray-100 h-full w-80">
@@ -16,7 +17,7 @@ export const Layout: React.FC<{
             className={`block py-4 text-md${
               activeRoute === r.link ? ' text-purple-900' : ''
             }`}
-            href={`/page/${r.link}.html`}
+            href={`${prefix}/page/${r.link}.html`}
           >
             {r.title}
           </a>

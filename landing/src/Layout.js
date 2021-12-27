@@ -1,5 +1,5 @@
 import React from "https://cdn.skypack.dev/react";
-const Layout = ({children, routes, activeRoute}) => {
+const Layout = ({children, routes, activeRoute, prefix = ""}) => {
   return /* @__PURE__ */ React.createElement("div", {
     className: "flex mx-auto h-full"
   }, /* @__PURE__ */ React.createElement("div", {
@@ -9,7 +9,7 @@ const Layout = ({children, routes, activeRoute}) => {
     href: "/"
   }, "Purple haze"), routes.map((r) => /* @__PURE__ */ React.createElement("a", {
     className: `block py-4 text-md${activeRoute === r.link ? " text-purple-900" : ""}`,
-    href: `/page/${r.link}.html`
+    href: `${prefix}/page/${r.link}.html`
   }, r.title))), /* @__PURE__ */ React.createElement("div", {
     className: "container mx-auto p-10 h-full overflow-auto"
   }, children));

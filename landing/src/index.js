@@ -7,6 +7,7 @@ import {html} from "./ssg/basic.js";
 import {routes} from "./markdownRoutes.js";
 const IndexPage = ({data: data2}) => {
   return /* @__PURE__ */ React.createElement(Layout, {
+    prefix: data2.prefix,
     routes: data2.routes
   }, /* @__PURE__ */ React.createElement("div", {
     className: "prose",
@@ -16,7 +17,8 @@ const IndexPage = ({data: data2}) => {
 const data = () => {
   return {
     content: htmlContent["markdown/index.md"],
-    routes: routes(htmlContent)
+    routes: routes(htmlContent),
+    prefix: ssg.envs.PATH_PREFIX
   };
 };
 const head = () => {

@@ -6,6 +6,7 @@ const typescriptFileRegex = /(.*)\.(tsx?|jsx)$/;
 const typingsRegex = /(.*)\.d\.ts$/;
 const cssRegex = /(.*)\.css$/;
 const mdRegex = /(.*)\.md$/;
+const envRegex = /^\.env/;
 
 export const isJSFile = (p: string) => !!p.match(fileRegex);
 export const isTypingsFile = (p: string) => !!p.match(typingsRegex);
@@ -13,6 +14,7 @@ export const isTSFile = (p: string) =>
   !!p.match(typescriptFileRegex) && !isTypingsFile(p);
 export const isCss = (p: string) => !!p.match(cssRegex);
 export const isMd = (p: string) => !!p.match(mdRegex);
+export const isEnv = (p: string) => !!p.match(envRegex);
 export const isDirectory = (p: string) => fs.statSync(p).isDirectory();
 
 export const mayBeIndexFileOrWithoutExtension = (p: string) => {
@@ -37,7 +39,7 @@ export const getPossibleFilePaths = (p: string) =>
     '/index.jsx',
   ].map((e) => `${p}${e}`);
 export const isStaticFile = (p: string) =>
-  !isJSFile(p) && !isTypingsFile(p) && !isTSFile(p) && !isMd(p);
+  !isJSFile(p) && !isTypingsFile(p) && !isTSFile(p) && !isMd(p) && !isEnv(p);
 
 export const mkFileDirSync = (p: string) => {
   const dir = path.dirname(p);
