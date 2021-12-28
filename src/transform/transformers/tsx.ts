@@ -45,3 +45,5 @@ export const transpileTS = (
     format: 'esm',
   });
 };
+
+// .default .react default

@@ -140,6 +140,9 @@ export const transformFiles = async ({ config }: { config: ConfigFile }) => {
     path: pathOut(config)(f),
     content: fs.readFileSync(pathIn(config)(f)),
   }));
+  rf.forEach((outFile) => {
+    fileWriteRecuirsiveSync(outFile.path, outFile.content);
+  });
   await downloadTypings(
     config,
     rf.map((r) => r.content.toString('utf-8')),

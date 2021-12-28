@@ -32,10 +32,18 @@ const htmlContent = {
     "excerpt": ""
   },
   "markdown/EnvironmentVariables.md": {
-    "content": "\nEnvironment variables must be put side by side to `purplehaze.json` in `.env` file.It is available only inside `export default` and `export const head` .\n\nUsage in JS example:\n\n```js\nconst graphQLClient = Chain(ssg.env.HOST, {\n  headers: {\n    Authorization: `Bearer ${ssg.env.TOKEN}`,\n  },\n});\n```\n\nIt is available only inside `export default` and `export const head` function to prevent leaking of secrets.\n",
+    "content": "\nEnvironment variables must be put side by side to `purplehaze.json` in `.env` file.It is available only inside `export default` and `export const head` . They can be used only inside the `export const data` function.\n\nOf course all env variables from system are avalable too.\n\nUsage example:\n\n```\nHOST=https://example.com\n```\n\n```js\nexport const data = async () => {\n  const content = await fetch(ssg.envs.HOST);\n  return { content: await content.json() };\n};\n```\n\nIt is available only inside `export const data` and `export const head` function to prevent leaking of secrets.\n",
     "data": {
       "link": "env-variables",
       "title": "Envs"
+    },
+    "excerpt": ""
+  },
+  "markdown/Changelog.md": {
+    "content": "\n## 0.0.2\n\n- added full environment variables support\n",
+    "data": {
+      "link": "changelog",
+      "title": "Changelog"
     },
     "excerpt": ""
   }
