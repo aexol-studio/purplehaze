@@ -1,5 +1,9 @@
-import React, { useState } from 'https://cdn.skypack.dev/react';
-import ReactDOM from 'https://cdn.skypack.dev/react-dom';
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'https://cdn.skypack.dev/react';
+import highlight from 'https://cdn.skypack.dev/highlight.js';
 
 const GithubIcon = () => (
   <svg
@@ -23,6 +27,9 @@ export const Layout: React.FC<{
   prefix?: string;
 }> = ({ children, routes, activeRoute, prefix = '' }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  useEffect(() => {
+    highlight.initHighlighting();
+  }, []);
   return (
     <div className="flex mx-auto h-full">
       <div

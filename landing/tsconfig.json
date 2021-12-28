@@ -23,6 +23,9 @@
       ],
       "https://cdn.skypack.dev/react-dom": [
         "src/typings/react-dom/index.d.ts"
+      ],
+      "https://cdn.skypack.dev/highlight.js": [
+        "src/typings/highlight.js/index.d.ts"
       ]
     }
   },

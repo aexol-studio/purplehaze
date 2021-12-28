@@ -7,6 +7,14 @@ export const htmlContent = {
         },
         "excerpt": ""
     },
+    "markdown/ModulesFromURL.md": {
+        "content": "\n## Type Streaming\n\nFor example: If you use url that begins with `https://cdn.skypack.dev` in your import. It will try to fetch typings from skypack and save them in typings folder referencing to jsconfig. This should provide typings for example in VSCode.\n",
+        "data": {
+            "title": "Import from URL",
+            "link": "import-from-url"
+        },
+        "excerpt": ""
+    },
     "markdown/Installation.md": {
         "content": "\nInstall globally\n\n```sh\nnpm i -g purplehaze\n```\n",
         "data": {
@@ -20,6 +28,22 @@ export const htmlContent = {
         "data": {
             "link": "how-it-works",
             "title": "How it works"
+        },
+        "excerpt": ""
+    },
+    "markdown/Helpers.md": {
+        "content": "\nPurple haze comes with pregenerated helper functions for markdown and html\n\n#### html\n\nIt doesnt transform html in any way, but gives you syntax coloring\n\n```js\nimport { html } from './ssg/basic.js';\nconst ADiv = html`\n  <div>Hello world</div>\n`;\n```\n",
+        "data": {
+            "title": "Helpers",
+            "link": "helpers"
+        },
+        "excerpt": ""
+    },
+    "markdown/GraphQL.md": {
+        "content": "\nWorks like fetch to GraphQL, where you need to provide host and/or options to receive fully Autocompleted client for schema url from your config.\n\n```js\nimport { Chain } from './ssg/main-schema/index.js';\nconst graphQLClient = Chain(ssg.config.graphql['main-schema'].url);\n\nconst response = await graphQLClient.query({ people: true });\n```\n",
+        "data": {
+            "link": "graphql",
+            "title": "GraphQL"
         },
         "excerpt": ""
     },
@@ -44,6 +68,14 @@ export const htmlContent = {
         "data": {
             "link": "changelog",
             "title": "Changelog"
+        },
+        "excerpt": ""
+    },
+    "markdown/BuiltInFunctions.md": {
+        "content": "\n#### head\n\n```js\nimport { html } from './ssg/basic.js';\nexport const head = () => html`<title>Hello world!</div>`;\n```\n\n#### data, hydrate\n\nData function is used for so called data hydration in JSX frameworks and others also. It is used for Static Site rendered websites to be able to consume the data and work on client side. So you need to handle both data and hydrate functions yourself so they can be executed on output script.\n\n```tsx\n// Create your app\nexport const data = async () => {\n  const Fetch = Chain(ssg.config.graphql.pokemon.url, {\n    headers: {\n      'Content-Type': 'application/json',\n    },\n  });\n  return Fetch.query({\n    pokemons: [\n      { first: 151 },\n      {\n        number: true,\n        name: true,\n        image: true,\n        types: true,\n        resistant: true,\n        weaknesses: true,\n      },\n    ],\n  });\n};\n\ntype DataType = ReturnType<typeof data> extends Promise<infer R> ? R : never;\n\nexport const hydrate = async (staticData: DataType) =>\n  ReactDOM.hydrate(<PokemonApp response={staticData} />, document.body);\n\nexport default async (staticData: DataType) => {\n  const renderBody = document.createElement('div');\n  ReactDOM.render(<PokemonApp response={staticData} />, renderBody);\n  return renderBody.innerHTML;\n};\n```\n\n#### pages\n\nIf you export pages function you can generate multiple pages per one file. This is useful for example for single blog post page. It takes\n\n```tsx\nexport const data = async () => {\n  const Fetch = Chain(ssg.config.graphql.pokemon.url, {\n    headers: {\n      'Content-Type': 'application/json',\n    },\n  });\n  return Fetch.query({\n    pokemons: [\n      { first: 5 },\n      {\n        number: true,\n        name: true,\n        image: true,\n        types: true,\n        resistant: true,\n        weaknesses: true,\n      },\n    ],\n  });\n};\n\ntype DataType = ReturnType<typeof data> extends Promise<infer R> ? R : never;\n\nexport const pages = (staticData: DataType) => {\n  return staticData.pokemons?.map((p) => {\n    const renderBody = document.createElement('div');\n    ReactDOM.render(<PokemonApp {...p} />, renderBody);\n    return {\n      slug: p.name?.split(' ')[0],\n      body: renderBody.innerHTML,\n      data: p,\n      head: html`\n        <title>${p.name || ''}</title>\n        <link href=\"../index.css\" rel=\"stylesheet\" type=\"text/css\" />\n      `,\n    };\n  });\n};\n```\n",
+        "data": {
+            "title": "Functions",
+            "link": "functions"
         },
         "excerpt": ""
     }

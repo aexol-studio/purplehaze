@@ -26,7 +26,7 @@ const hydrate = async (staticData) => ReactDOM.hydrate(/* @__PURE__ */ React.cre
   data: staticData
 }), document.body);
 const pages = async (staticData) => {
-  return Object.entries(staticData.htmlContent).filter(([, v]) => !!v.data.link).map(([k, v], i) => {
+  return await Promise.all(Object.entries(staticData.htmlContent).filter(([, v]) => !!v.data.link).map(async ([k, v], i) => {
     const renderBody = document.createElement("div");
     ReactDOM.render(/* @__PURE__ */ React.createElement(CustomPage, {
       data: {
@@ -46,11 +46,15 @@ const pages = async (staticData) => {
       },
       slug: v.data.link,
       head: html`
-          <link rel="stylesheet" href="../tw.css" />
-          <title>Purple haze docs</title>
-        `
+            <link
+              rel="stylesheet"
+              href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.2.0/build/styles/github-dark.min.css"
+            />
+            <link rel="stylesheet" href="../tw.css" />
+            <title>Purple haze docs</title>
+          `
     };
-  });
+  }));
 };
 export {
   data,
