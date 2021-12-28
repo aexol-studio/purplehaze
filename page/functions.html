@@ -1,0 +1,102 @@
+<!DOCTYPE html><html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      
+      <script type="module" src="./../page.js"></script><script type="module">
+        import { hydrate } from "./../page.js";
+        hydrate({"content":{"content":"\n#### head\n\n```js\nimport { html } from './ssg/basic.js';\nexport const head = () => html`<title>Hello world!</div>`;\n```\n\n#### data, hydrate\n\nData function is used for so called data hydration in JSX frameworks and others also. It is used for Static Site rendered websites to be able to consume the data and work on client side. So you need to handle both data and hydrate functions yourself so they can be executed on output script.\n\n```tsx\n// Create your app\nexport const data = async () => {\n  const Fetch = Chain(ssg.config.graphql.pokemon.url, {\n    headers: {\n      'Content-Type': 'application/json',\n    },\n  });\n  return Fetch.query({\n    pokemons: [\n      { first: 151 },\n      {\n        number: true,\n        name: true,\n        image: true,\n        types: true,\n        resistant: true,\n        weaknesses: true,\n      },\n    ],\n  });\n};\n\ntype DataType = ReturnType<typeof data> extends Promise<infer R> ? R : never;\n\nexport const hydrate = async (staticData: DataType) =>\n  ReactDOM.hydrate(<PokemonApp response={staticData} />, document.body);\n\nexport default async (staticData: DataType) => {\n  const renderBody = document.createElement('div');\n  ReactDOM.render(<PokemonApp response={staticData} />, renderBody);\n  return renderBody.innerHTML;\n};\n```\n\n#### pages\n\nIf you export pages function you can generate multiple pages per one file. This is useful for example for single blog post page. It takes\n\n```tsx\nexport const data = async () => {\n  const Fetch = Chain(ssg.config.graphql.pokemon.url, {\n    headers: {\n      'Content-Type': 'application/json',\n    },\n  });\n  return Fetch.query({\n    pokemons: [\n      { first: 5 },\n      {\n        number: true,\n        name: true,\n        image: true,\n        types: true,\n        resistant: true,\n        weaknesses: true,\n      },\n    ],\n  });\n};\n\ntype DataType = ReturnType<typeof data> extends Promise<infer R> ? R : never;\n\nexport const pages = (staticData: DataType) => {\n  return staticData.pokemons?.map((p) => {\n    const renderBody = document.createElement('div');\n    ReactDOM.render(<PokemonApp {...p} />, renderBody);\n    return {\n      slug: p.name?.split(' ')[0],\n      body: renderBody.innerHTML,\n      data: p,\n      head: html`\n        <title>${p.name || ''}</title>\n        <link href=\"../index.css\" rel=\"stylesheet\" type=\"text/css\" />\n      `,\n    };\n  });\n};\n```\n","data":{"title":"Functions","link":"functions"},"excerpt":""},"routes":[{"link":"import-from-url","title":"Import from URL"},{"link":"installation","title":"Installation"},{"link":"how-it-works","title":"How it works"},{"link":"helpers","title":"Helpers"},{"link":"graphql","title":"GraphQL"},{"link":"getting-started","title":"Getting Started"},{"link":"env-variables","title":"Envs"},{"link":"changelog","title":"Changelog"},{"link":"functions","title":"Functions"}],"activeRoute":"functions","prefix":"/purplehaze"})
+      </script>
+
+            <link
+              rel="stylesheet"
+              href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.2.0/build/styles/github-dark.min.css"
+            />
+            <link rel="stylesheet" href="../tw.css" />
+            <title>Purple haze docs</title>
+          
+    </head>
+    <body>
+      <div class="flex mx-auto h-full"><div class="absolute sm:hidden block cursor-pointer top-6 right-6"><div class="h-2 w-10 bg-purple-900 mb-2 rounded"></div><div class="h-2 w-10 bg-purple-900 mb-2 rounded"></div><div class="h-2 w-10 bg-purple-900 mb-2 rounded"></div></div><div class="py-10 px-20 bg-gray-100 h-full w-80 sm:block hidden"><a class="block py-4 text-lg text-purple-900 font-black" href="/purplehaze/">Purple haze</a><a class="block py-4 text-md" href="/purplehaze/page/import-from-url.html">Import from URL</a><a class="block py-4 text-md" href="/purplehaze/page/installation.html">Installation</a><a class="block py-4 text-md" href="/purplehaze/page/how-it-works.html">How it works</a><a class="block py-4 text-md" href="/purplehaze/page/helpers.html">Helpers</a><a class="block py-4 text-md" href="/purplehaze/page/graphql.html">GraphQL</a><a class="block py-4 text-md" href="/purplehaze/page/getting-started.html">Getting Started</a><a class="block py-4 text-md" href="/purplehaze/page/env-variables.html">Envs</a><a class="block py-4 text-md" href="/purplehaze/page/changelog.html">Changelog</a><a class="block py-4 text-md text-purple-900" href="/purplehaze/page/functions.html">Functions</a></div><div class="container mx-auto p-10 h-full overflow-auto"><div class="prose"><h4>head</h4>
+<pre><code class="language-js">import { html } from './ssg/basic.js';
+export const head = () =&gt; html`&lt;title&gt;Hello world!&lt;/div&gt;`;
+</code></pre>
+<h4>data, hydrate</h4>
+<p>Data function is used for so called data hydration in JSX frameworks and others also. It is used for Static Site rendered websites to be able to consume the data and work on client side. So you need to handle both data and hydrate functions yourself so they can be executed on output script.</p>
+<pre><code class="language-tsx">// Create your app
+export const data = async () =&gt; {
+  const Fetch = Chain(ssg.config.graphql.pokemon.url, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return Fetch.query({
+    pokemons: [
+      { first: 151 },
+      {
+        number: true,
+        name: true,
+        image: true,
+        types: true,
+        resistant: true,
+        weaknesses: true,
+      },
+    ],
+  });
+};
+
+type DataType = ReturnType&lt;typeof data&gt; extends Promise&lt;infer R&gt; ? R : never;
+
+export const hydrate = async (staticData: DataType) =&gt;
+  ReactDOM.hydrate(&lt;PokemonApp response={staticData} /&gt;, document.body);
+
+export default async (staticData: DataType) =&gt; {
+  const renderBody = document.createElement('div');
+  ReactDOM.render(&lt;PokemonApp response={staticData} /&gt;, renderBody);
+  return renderBody.innerHTML;
+};
+</code></pre>
+<h4>pages</h4>
+<p>If you export pages function you can generate multiple pages per one file. This is useful for example for single blog post page. It takes</p>
+<pre><code class="language-tsx">export const data = async () =&gt; {
+  const Fetch = Chain(ssg.config.graphql.pokemon.url, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return Fetch.query({
+    pokemons: [
+      { first: 5 },
+      {
+        number: true,
+        name: true,
+        image: true,
+        types: true,
+        resistant: true,
+        weaknesses: true,
+      },
+    ],
+  });
+};
+
+type DataType = ReturnType&lt;typeof data&gt; extends Promise&lt;infer R&gt; ? R : never;
+
+export const pages = (staticData: DataType) =&gt; {
+  return staticData.pokemons?.map((p) =&gt; {
+    const renderBody = document.createElement('div');
+    ReactDOM.render(&lt;PokemonApp {...p} /&gt;, renderBody);
+    return {
+      slug: p.name?.split(' ')[0],
+      body: renderBody.innerHTML,
+      data: p,
+      head: html`
+        &lt;title&gt;${p.name || ''}&lt;/title&gt;
+        &lt;link href="../index.css" rel="stylesheet" type="text/css" /&gt;
+      `,
+    };
+  });
+};
+</code></pre>
+</div></div></div>
+    </body>
+  </html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html><html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      
+      <script type="module" src="./../page.js"></script><script type="module">
+        import { hydrate } from "./../page.js";
+        hydrate({"content":{"content":"\nWorks like fetch to GraphQL, where you need to provide host and/or options to receive fully Autocompleted client for schema url from your config.\n\n```js\nimport { Chain } from './ssg/main-schema/index.js';\nconst graphQLClient = Chain(ssg.config.graphql['main-schema'].url);\n\nconst response = await graphQLClient.query({ people: true });\n```\n","data":{"link":"graphql","title":"GraphQL"},"excerpt":""},"routes":[{"link":"import-from-url","title":"Import from URL"},{"link":"installation","title":"Installation"},{"link":"how-it-works","title":"How it works"},{"link":"helpers","title":"Helpers"},{"link":"graphql","title":"GraphQL"},{"link":"getting-started","title":"Getting Started"},{"link":"env-variables","title":"Envs"},{"link":"changelog","title":"Changelog"},{"link":"functions","title":"Functions"}],"activeRoute":"graphql","prefix":"/purplehaze"})
+      </script>
+
+            <link
+              rel="stylesheet"
+              href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.2.0/build/styles/github-dark.min.css"
+            />
+            <link rel="stylesheet" href="../tw.css" />
+            <title>Purple haze docs</title>
+          
+    </head>
+    <body>
+      <div class="flex mx-auto h-full"><div class="absolute sm:hidden block cursor-pointer top-6 right-6"><div class="h-2 w-10 bg-purple-900 mb-2 rounded"></div><div class="h-2 w-10 bg-purple-900 mb-2 rounded"></div><div class="h-2 w-10 bg-purple-900 mb-2 rounded"></div></div><div class="py-10 px-20 bg-gray-100 h-full w-80 sm:block hidden"><a class="block py-4 text-lg text-purple-900 font-black" href="/purplehaze/">Purple haze</a><a class="block py-4 text-md" href="/purplehaze/page/import-from-url.html">Import from URL</a><a class="block py-4 text-md" href="/purplehaze/page/installation.html">Installation</a><a class="block py-4 text-md" href="/purplehaze/page/how-it-works.html">How it works</a><a class="block py-4 text-md" href="/purplehaze/page/helpers.html">Helpers</a><a class="block py-4 text-md text-purple-900" href="/purplehaze/page/graphql.html">GraphQL</a><a class="block py-4 text-md" href="/purplehaze/page/getting-started.html">Getting Started</a><a class="block py-4 text-md" href="/purplehaze/page/env-variables.html">Envs</a><a class="block py-4 text-md" href="/purplehaze/page/changelog.html">Changelog</a><a class="block py-4 text-md" href="/purplehaze/page/functions.html">Functions</a></div><div class="container mx-auto p-10 h-full overflow-auto"><div class="prose"><p>Works like fetch to GraphQL, where you need to provide host and/or options to receive fully Autocompleted client for schema url from your config.</p>
+<pre><code class="language-js">import { Chain } from './ssg/main-schema/index.js';
+const graphQLClient = Chain(ssg.config.graphql['main-schema'].url);
+
+const response = await graphQLClient.query({ people: true });
+</code></pre>
+</div></div></div>
+    </body>
+  </html>

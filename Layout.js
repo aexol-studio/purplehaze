@@ -1,4 +1,8 @@
-import React, {useState} from "https://cdn.skypack.dev/react";
+import React, {
+  useEffect,
+  useState
+} from "https://cdn.skypack.dev/react";
+import highlight from "https://cdn.skypack.dev/highlight.js";
 const GithubIcon = () => /* @__PURE__ */ React.createElement("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   width: "24",
@@ -14,6 +18,9 @@ const GithubIcon = () => /* @__PURE__ */ React.createElement("svg", {
 }));
 const Layout = ({children, routes, activeRoute, prefix = ""}) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  useEffect(() => {
+    highlight.initHighlighting();
+  }, []);
   return /* @__PURE__ */ React.createElement("div", {
     className: "flex mx-auto h-full"
   }, /* @__PURE__ */ React.createElement("div", {
