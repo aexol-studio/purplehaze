@@ -40,7 +40,7 @@ export const htmlContent = {
         "excerpt": ""
     },
     "markdown/Changelog.md": {
-        "content": "\n## 0.0.2\n\n- added full environment variables support\n",
+        "content": "\n## 0.0.2\n\n- added full environment variables support\n\n## 0.0.3\n\n- generate output js scripts\n- added docs responsiveness\n",
         "data": {
             "link": "changelog",
             "title": "Changelog"
