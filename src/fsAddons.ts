@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 export const fileRegex = /(.*)\.js$/;
-const typescriptFileRegex = /(.*)\.(tsx?|jsx)$/;
+const typescriptFileRegex = /(.*)\.(tsx?|jsx?)$/;
 const typingsRegex = /(.*)\.d\.ts$/;
 const cssRegex = /(.*)\.css$/;
 const mdRegex = /(.*)\.md$/;
@@ -11,6 +11,8 @@ const envRegex = /^\.env/;
 export const isJSFile = (p: string) => !!p.match(fileRegex);
 export const isTypingsFile = (p: string) => !!p.match(typingsRegex);
 export const isTSFile = (p: string) =>
+  !!p.match(typescriptFileRegex) && !isTypingsFile(p);
+export const isTransformableFile = (p: string) =>
   !!p.match(typescriptFileRegex) && !isTypingsFile(p);
 export const isCss = (p: string) => !!p.match(cssRegex);
 export const isMd = (p: string) => !!p.match(mdRegex);

@@ -6,7 +6,7 @@ import { browserHtml } from '@/browserHtml';
 import { runBrowser } from '@/browser';
 import { createServer } from 'net';
 import fs from 'fs';
-import { pathIn } from '@/paths';
+import { pathGenerated } from '@/paths';
 import { envLoader } from '@/loaders/env';
 
 const internals = (config: ConfigFile, build?: boolean) => {
@@ -64,10 +64,13 @@ export const initBrowserBundler = async ({
       const [, , ...fileNames] = requestURL.split('/');
       const fileName = fileNames.join('/');
       if (fileName?.endsWith('.js') || fileName?.endsWith('.mjs')) {
-        const filePath = pathIn(config)(fileName);
+        const filePath = pathGenerated(fileName);
         const pathContent = fs.readFileSync(filePath).toString('utf-8');
         const fContent = [internals(config), pathContent].join('\n');
-        res.writeHead(200, { 'content-type': 'text/javascript' });
+        res.writeHead(200, {
+          'content-type': 'text/javascript',
+          'Cache-Control': 'max-age=0',
+        });
         res.write(fContent);
       }
     }

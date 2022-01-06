@@ -1,9 +1,4 @@
-import React, {
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from 'https://cdn.skypack.dev/react';
-import highlight from 'https://cdn.skypack.dev/highlight.js';
+import React, { useState } from 'https://cdn.skypack.dev/react';
 
 const GithubIcon = () => (
   <svg
@@ -27,31 +22,60 @@ export const Layout: React.FC<{
   prefix?: string;
 }> = ({ children, routes, activeRoute, prefix = '' }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  useEffect(() => {
-    highlight.initHighlighting();
-  }, []);
   return (
-    <div className="flex mx-auto h-full">
-      <div
-        className="absolute sm:hidden block cursor-pointer top-6 right-6"
-        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-      >
-        <div className="h-2 w-10 bg-purple-900 mb-2 rounded"></div>
-        <div className="h-2 w-10 bg-purple-900 mb-2 rounded"></div>
-        <div className="h-2 w-10 bg-purple-900 mb-2 rounded"></div>
+    <div className="h-full flex flex-col">
+      <div className="w-full sm:flex hidden px-10 border-b border-purple-200 items-center">
+        <a className="block py-4 text-xl logo font-black" href={`${prefix}/`}>
+          Purple haze
+        </a>
+        <span className="text-gray-400 block ml-2 text-md mt-1">
+          Bundler that puffs in the browser
+        </span>
+        <span className="ml-auto mr-2 text-gray-500">0.0.4</span>
+        <a
+          href="https://github.com/aexol-studio/purplehaze"
+          className="text-purple-500"
+          title="Github repository"
+        >
+          <GithubIcon />
+        </a>
       </div>
-      {mobileMenuOpen && (
-        <div className="py-10 px-20 bg-gray-100 h-full w-80 sm:hidden block absolute top-0 left-0">
-          <a
-            className="block py-4 text-lg text-purple-900 font-black"
-            href={`${prefix}/`}
-          >
-            Purple haze
-          </a>
+      <div className="flex w-full flex-1 overflow-hidden">
+        <div
+          className="absolute sm:hidden block cursor-pointer top-6 right-6"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          <div className="h-2 w-10 bg-purple-500 mb-2 rounded"></div>
+          <div className="h-2 w-10 bg-purple-500 mb-2 rounded"></div>
+          <div className="h-2 w-10 bg-purple-500 mb-2 rounded"></div>
+        </div>
+        {mobileMenuOpen && (
+          <div className="py-10 px-20 bg-gray-100 h-full w-80 sm:hidden block absolute top-0 left-0">
+            <a
+              className="block py-4 text-lg text-purple-900 font-black"
+              href={`${prefix}/`}
+            >
+              Purple haze
+            </a>
+            {routes.map((r) => (
+              <a
+                className={`block py-3 text-md font-medium${
+                  activeRoute === r.link ? ' text-purple-600' : 'text-gray-600'
+                }`}
+                href={`${prefix}/page/${r.link}.html`}
+              >
+                {r.title}
+              </a>
+            ))}
+          </div>
+        )}
+        <div className="py-6 px-10 w-80 sm:block hidden  border-r border-purple-200">
           {routes.map((r) => (
             <a
-              className={`block py-4 text-md${
-                activeRoute === r.link ? ' text-purple-900' : ''
+              className={`transition-all block py-3 text-md font-medium${
+                activeRoute === r.link
+                  ? ' text-purple-600'
+                  : ' text-gray-600 hover:text-purple-600'
               }`}
               href={`${prefix}/page/${r.link}.html`}
             >
@@ -59,27 +83,9 @@ export const Layout: React.FC<{
             </a>
           ))}
         </div>
-      )}
-      <div className="py-10 px-20 bg-gray-100 h-full w-80 sm:block hidden">
-        <a
-          className="block py-4 text-lg text-purple-900 font-black"
-          href={`${prefix}/`}
-        >
-          Purple haze
-        </a>
-        {routes.map((r) => (
-          <a
-            className={`block py-4 text-md${
-              activeRoute === r.link ? ' text-purple-900' : ''
-            }`}
-            href={`${prefix}/page/${r.link}.html`}
-          >
-            {r.title}
-          </a>
-        ))}
-      </div>
-      <div className="container mx-auto p-10 h-full overflow-auto">
-        {children}
+        <div className="container mx-auto px-20 py-6 pb-20 h-full overflow-auto">
+          {children}
+        </div>
       </div>
     </div>
   );

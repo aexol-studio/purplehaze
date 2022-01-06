@@ -19,18 +19,6 @@ export const TSConfig = () => ({
   },
 });
 
-export const JSConfig = () => ({
-  compilerOptions: {
-    target: 'esnext',
-    module: 'commonjs',
-    baseUrl: './',
-  },
-  include: ['./pages/**/*', './pages/purplehaze.d.ts'],
-});
-
-export const getJsConfig = () =>
-  existsJSONOrDefaultSync('./jsconfig.json', JSConfig());
-
 export const getTsConfig = (config: ConfigFile) =>
   existsJSONOrDefaultSync('./tsconfig.json', TSConfig());
 
@@ -49,15 +37,6 @@ export const regenerateTsConfig = (config: ConfigFile) => {
   });
 };
 
-export const regenerateJsConfig = (config: ConfigFile) => {
-  updateJSConfig((oldConfig) => {
-    return {
-      ...oldConfig,
-      include: [`${config.in}/**/*.js`, `${config.in}/purplehaze.d.ts`],
-    };
-  });
-};
-
 export const updateTSConfig = (
   config: ConfigFile,
   fn: (config: any) => any,
@@ -65,12 +44,5 @@ export const updateTSConfig = (
   fs.writeFileSync(
     './tsconfig.json',
     JSON.stringify(fn(getTsConfig(config)), null, 2),
-  );
-};
-
-export const updateJSConfig = (fn: (config: any) => any) => {
-  fs.writeFileSync(
-    './jsconfig.json',
-    JSON.stringify(fn(getJsConfig()), null, 2),
   );
 };

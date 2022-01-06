@@ -2,7 +2,6 @@ import { Chain } from './ssg/pokemon/index.js';
 import React from 'https://cdn.skypack.dev/react';
 import ReactDOM from 'https://cdn.skypack.dev/react-dom';
 import { SinglePokemon } from './SinglePokemon.js';
-import { html } from './ssg/basic.js';
 
 const PokemonApp = (staticData: any) => {
   return (
@@ -50,7 +49,7 @@ export const pages = (staticData: DataType) => {
       slug: p.name?.split(' ')[0],
       body: renderBody.innerHTML,
       data: p,
-      head: html`
+      head: `
         <title>${p.name || ''}</title>
         <link href="../index.css" rel="stylesheet" type="text/css" />
       `,

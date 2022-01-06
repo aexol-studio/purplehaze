@@ -2,10 +2,8 @@ import { Chain } from './ssg/pokemon/index.js';
 import React from 'https://cdn.skypack.dev/react';
 import ReactDOM from 'https://cdn.skypack.dev/react-dom';
 import { SinglePokemon } from './SinglePokemon.js';
-import { html } from './ssg/basic.js';
 
-export const head = async () =>
-  html`
+export const head = async () => `
     <title>Pokemon</title>
   `;
 

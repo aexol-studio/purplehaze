@@ -16,7 +16,6 @@ export type ConfigFile = typeof GLOBAL_CONFIG_FILE & {
       };
     };
   };
-  mode?: 'typescript' | 'jsx';
 };
 
 export const validateConfig = (config: ConfigFile) => {

@@ -2,11 +2,9 @@
 import { ConfigFile, GLOBAL_CONFIG_FILE } from './config';
 export const getInitialConfig = ({
   graphql,
-  mode,
-}: Pick<ConfigFile, 'graphql' | 'mode'>): ConfigFile => {
+}: Pick<ConfigFile, 'graphql'>): ConfigFile => {
   return {
     ...GLOBAL_CONFIG_FILE,
     graphql,
-    mode,
   };
 };

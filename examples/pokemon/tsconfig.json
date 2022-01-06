@@ -9,9 +9,12 @@
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "noEmit": true,
-    "jsx": "react",
-    "baseUrl": "./",
-    "paths": {}
+    "baseUrl": "",
+    "paths": {
+      "https://unpkg.com/htm/preact/index.mjs?module": [
+        ".purplehaze/typings/index.mjs?module/index.d.ts"
+      ]
+    }
   },
   "include": [
     "./pages/**/*.tsx",

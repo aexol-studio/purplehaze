@@ -1,6 +1,7 @@
 ---
 link: env-variables
 title: Envs
+order: 6
 ---
 
 Environment variables must be put side by side to `purplehaze.json` in `.env` file.It is available only inside `export default` and `export const head` . They can be used only inside the `export const data` function.

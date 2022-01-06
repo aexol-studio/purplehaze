@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { bundle } from '@/transform/module';
 import { ConfigFile } from '@/config';
-import { GenerateGlobalTypings, md, basicFunctions } from '@/transform/fn';
+import { GenerateGlobalTypings } from '@/transform/fn';
 import { calcTime, message } from '@/console';
 import { downloadTypings } from '@/typeFetcher';
 import {
@@ -14,10 +14,11 @@ import {
   fileRegex,
   isMd,
 } from '@/fsAddons';
-import { pathIn, pathOut, pathSsg } from '@/paths';
+import { pathGenerated, pathIn, pathOut, pathSsg } from '@/paths';
 import { transformMarkdownFiles } from '@/transform/transformers/markdown';
 import { transformTsx } from '@/transform/transformers/tsx';
 import { envTransformer } from '@/transform/transformers/env';
+import { PATH_GENERATED } from '@/constants';
 
 const getFiles = (dir: string) => {
   const result = [];
@@ -96,11 +97,6 @@ export const injectHtmlFile = async ({
 };
 
 export const generateBasicTypingsFiles = async (config: ConfigFile) => {
-  const ssgPath = pathSsg(config);
-  fileWriteRecuirsiveSync(ssgPath('md.js'), md.code);
-  fileWriteRecuirsiveSync(ssgPath('md.d.ts'), md.typings);
-  fileWriteRecuirsiveSync(ssgPath('basic.js'), basicFunctions.code);
-  fileWriteRecuirsiveSync(ssgPath('basic.d.ts'), basicFunctions.typings);
   envTransformer(config);
 };
 
@@ -118,7 +114,7 @@ export const generateTypingsFiles = async ({
     schema,
   });
   const ssgPath = pathSsg(config);
-  fileWriteRecuirsiveSync(ssgPath('index.ts'), typings);
+  fileWriteRecuirsiveSync(ssgPath(name, 'index.ts'), typings);
 };
 
 export const transformFiles = async ({ config }: { config: ConfigFile }) => {
@@ -133,13 +129,14 @@ export const transformFiles = async ({ config }: { config: ConfigFile }) => {
     await transformTsx(config)(tsFiles);
   }
 
-  const jsFiles = await readFiles(isJSFile)(config.in);
+  const jsFiles = await readFiles(isJSFile)(PATH_GENERATED);
 
   const rf = jsFiles.map((f) => ({
     name: f,
     path: pathOut(config)(f),
-    content: fs.readFileSync(pathIn(config)(f)),
+    content: fs.readFileSync(pathGenerated(f)),
   }));
+
   rf.forEach((outFile) => {
     fileWriteRecuirsiveSync(outFile.path, outFile.content);
   });

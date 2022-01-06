@@ -1,12 +1,9 @@
 import React from 'https://cdn.skypack.dev/react';
 import ReactDOM from 'https://cdn.skypack.dev/react-dom';
-
-import { md } from './ssg/md.js';
-
 import { htmlContent } from './ssg/markdown.js';
 import { Layout } from './Layout.js';
 import { routes } from './markdownRoutes.js';
-import { html } from './ssg/basic.js';
+import { renderMarkdown } from './mdtransform.js';
 
 const CustomPage: React.FC<{
   data: {
@@ -23,8 +20,10 @@ const CustomPage: React.FC<{
       routes={data.routes}
     >
       <div
-        className="prose"
-        dangerouslySetInnerHTML={{ __html: md`${data.content.content}` }}
+        className="prose prose-lg"
+        dangerouslySetInnerHTML={{
+          __html: renderMarkdown.render(data.content.content),
+        }}
       ></div>
     </Layout>
   );
@@ -73,7 +72,7 @@ export const pages = async (staticData: DataType) => {
             prefix: staticData.prefix,
           },
           slug: v.data.link,
-          head: html`
+          head: `
             <link
               rel="stylesheet"
               href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.2.0/build/styles/github-dark.min.css"

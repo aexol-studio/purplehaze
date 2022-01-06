@@ -1,6 +1,7 @@
 ---
 link: graphql
 title: GraphQL
+order: 4
 ---
 
 Works like fetch to GraphQL, where you need to provide host and/or options to receive fully Autocompleted client for schema url from your config.

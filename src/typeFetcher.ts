@@ -2,16 +2,10 @@ import fetch from 'node-fetch';
 import { ConfigFile } from '@/config';
 import { message } from '@/console';
 import { fileWriteRecuirsiveSync } from '@/fsAddons';
-import {
-  getTsConfig,
-  getJsConfig,
-  updateTSConfig,
-  updateJSConfig,
-} from '@/transpilerConfig';
-import { pathIn } from '@/paths';
+import { getTsConfig, updateTSConfig } from '@/transpilerConfig';
+import { pathGeneratedTypings } from '@/paths';
 
-const URL_REGEX = new RegExp(/import.*(https:\/\/.*)\/(.*)['|"]/gm);
-const TYPINGS_PATH = 'typings';
+const URL_REGEX = new RegExp(/^import.*(https:\/\/.*)\/(.*)['|"]/gm);
 
 interface PackageDetails {
   packageName: string;
@@ -121,9 +115,7 @@ export const downloadTypings = async (
   configFile: ConfigFile,
   filesContent: string[],
 ) => {
-  const compilerConfig = configFile.mode
-    ? getTsConfig(configFile)
-    : getJsConfig();
+  const compilerConfig = getTsConfig(configFile);
   const packages = mergePackages(filesContent).filter(
     (p) =>
       !compilerConfig.compilerOptions?.paths?.[`${p.url}/${p.packageName}`],
@@ -131,41 +123,22 @@ export const downloadTypings = async (
   const ts = await fetchTypings(packages);
   const paths: Record<string, string[]> = {};
   ts.forEach((t) => {
-    const typingsPath = pathIn(configFile)(
-      TYPINGS_PATH,
-      t.p.packageName,
-      'index.d.ts',
-    );
+    const typingsPath = pathGeneratedTypings(t.p.packageName, 'index.d.ts');
     message(`Installing typings for "${t.p.packageName}"`, 'yellowBright');
     fileWriteRecuirsiveSync(typingsPath, t.typings);
     paths[`${t.p.url}/${t.p.packageName}`] = [typingsPath];
   });
-  if (configFile.mode) {
-    updateTSConfig(configFile, (tsConfig) => {
-      return {
-        ...tsConfig,
-        compilerOptions: {
-          ...(tsConfig.compilerOptions || {}),
-          paths: {
-            ...(tsConfig.compilerOptions?.paths || {}),
-            ...paths,
-          },
-        },
-      };
-    });
-    return;
-  }
-  updateJSConfig((jsConfig) => {
+  updateTSConfig(configFile, (tsConfig) => {
     return {
-      ...jsConfig,
+      ...tsConfig,
       compilerOptions: {
-        ...(jsConfig.compilerOptions || {}),
+        ...(tsConfig.compilerOptions || {}),
         paths: {
-          ...(jsConfig.compilerOptions?.paths || {}),
+          ...(tsConfig.compilerOptions?.paths || {}),
           ...paths,
         },
       },
     };
   });
-  //TODO: construct paths for jsconfig and tsconfig
+  return;
 };

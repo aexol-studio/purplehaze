@@ -3,7 +3,7 @@ import ts from 'typescript';
 import { transform } from 'esbuild';
 import { message } from '@/console';
 import { fileWriteRecuirsiveSync } from '@/fsAddons';
-import { pathIn } from '@/paths';
+import { pathGenerated, pathIn } from '@/paths';
 import fs from 'fs';
 
 export const transformTsx = (config: ConfigFile) => async (
@@ -21,7 +21,7 @@ export const transformTsx = (config: ConfigFile) => async (
           tsconfig,
         );
         const newJsFile = tsFile.replace(/\.tsx?$/, '.js');
-        const jsFileName = pathIn(config)(newJsFile);
+        const jsFileName = pathGenerated(newJsFile);
         fileWriteRecuirsiveSync(jsFileName, transpiled.code);
         return newJsFile;
       }),

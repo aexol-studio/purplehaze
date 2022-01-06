@@ -1,18 +1,18 @@
 import React from 'https://cdn.skypack.dev/react';
 import ReactDOM from 'https://cdn.skypack.dev/react-dom';
-import { md } from './ssg/md.js';
-
 import { htmlContent } from './ssg/markdown.js';
 import { Layout } from './Layout.js';
-import { html } from './ssg/basic.js';
 import { routes } from './markdownRoutes.js';
+import { renderMarkdown } from './mdtransform.js';
 
 const IndexPage: React.FC<{ data: DataType }> = ({ data }) => {
   return (
     <Layout prefix={data.prefix} routes={data.routes}>
       <div
-        className="prose"
-        dangerouslySetInnerHTML={{ __html: md`${data.content.content}` }}
+        className="prose prose-lg"
+        dangerouslySetInnerHTML={{
+          __html: renderMarkdown.render(data.content.content),
+        }}
       ></div>
     </Layout>
   );
@@ -27,7 +27,7 @@ export const data = () => {
 };
 
 export const head = () => {
-  return html`
+  return `
     <link rel="stylesheet" href="./tw.css" />
     <title>Purple haze docs</title>
   `;

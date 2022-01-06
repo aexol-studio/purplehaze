@@ -1,6 +1,7 @@
 ---
 link: changelog
 title: Changelog
+order: 99
 ---
 
 ## 0.0.2
@@ -11,3 +12,9 @@ title: Changelog
 
 - generate output js scripts
 - added docs responsiveness
+
+## 0.0.4
+
+- removed basic helper functions
+- improved documentation
+- markdown transformer added

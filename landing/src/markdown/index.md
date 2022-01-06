@@ -3,17 +3,84 @@ link: ''
 title: ''
 ---
 
-# 😶‍🌫️ Purple haze
+# 😶‍🌫️ Getting higher
+
+Welcome to the Purple Haze documentation!
 
 Inspired by generative programming and weed :). So I was learning Elm language at home usually in the evening and now I am missing all this generative stuff from Elm libs in TS.
 
-## What is generated?
+## System requirements
 
-- when you type **URL** of an esmodule typings are fetched in the background and typings generated locally for intellisense
-- when you add **Markdown** files with gray matter it will generate typings for those
-- when you add a **Page** it will generate Route types so you won't make a mistake later when routing to another page
-- when you add **GraphQL** backends it will generate Zeus libraries for it making communication with GraphQL backend type safe
-- when you modify **config** you can access type safe values from it during build ssg process
-- when you add **env variables** you can access the record with all of them
+- NodeJS 12 or later
+- Mac, Win, Linux are supported
 
-It is the missing ingredient of Web Components architecture. Simple bundler for GraphQL based website using esmodules. What makes it unique? It uses browser for bundling (not node). Remember in ESModules you can use URL imports and relative imports. You can also provide importmap for other imports
+## Setup
+
+Install globally
+
+```sh
+npm i -g purplehaze
+```
+
+or locally if you only wish to use it for one project
+
+```sh
+npm i -D purplehaze
+```
+
+## Init
+
+Init a new project. This will create `purplehaze.json` in current directory. You don't need a `package.json` but you can add one for type completions.
+
+```sh
+purplehaze --init .
+```
+
+Set up config.
+
+```json
+{
+  "graphql": {
+    "pokemon": {
+      "url": "https://graphql-pokemon2.vercel.app/"
+    }
+  },
+  "in": "./pages",
+  "out": "./out",
+  "websocketPort": 1414,
+  "port": 8080
+}
+```
+
+So you need to provide your schema url ( you can declare multiple schemas ) ,in and out dirs for purplehaze
+
+You can also add headers if needed:
+
+```json
+{
+  "graphql": {
+    "pokemon": {
+      "url": "https://graphql-pokemon2.vercel.app/",
+      "headers": {
+        "Authorization": "Bearer MyToken"
+      }
+    }
+  },
+  "in": "./pages",
+  "out": "./out",
+  "websocketPort": 1414,
+  "port": 8080
+}
+```
+
+Watch
+
+```sh
+purplehaze
+```
+
+Build
+
+```sh
+purplehaze --build
+```

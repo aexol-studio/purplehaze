@@ -7,7 +7,7 @@ import {
   transformFiles,
   copyStaticFiles,
 } from '@/transform';
-import { regenerateTsConfig, regenerateJsConfig } from '@/transpilerConfig';
+import { regenerateTsConfig } from '@/transpilerConfig';
 import { Utils } from 'graphql-zeus';
 
 const transformHeaders = (headers?: { [x: string]: string }) => {
@@ -19,11 +19,7 @@ const transformHeaders = (headers?: { [x: string]: string }) => {
 
 export const preBuild = async (config: ConfigFile) => {
   cleanBuild(config);
-  if (config.mode) {
-    regenerateTsConfig(config);
-  } else {
-    regenerateJsConfig(config);
-  }
+  regenerateTsConfig(config);
   await generateBasicTypingsFiles(config);
   if (config.graphql) {
     await Promise.all(

@@ -5,6 +5,10 @@
 
 Inspired by generative programming and weed :). So I was learning Elm language at home usually in the evening and now I am missing all this generative stuff from Elm libs in TS.
 
+## Documentation
+
+[Documentation](https://aexol-studio.github.io/purplehaze/) for this project is hosted on Github Pages
+
 ## What is generated?
 
 - when you type **URL** of an esmodule typings are fetched in the background and typings generated locally for intellisense
@@ -15,28 +19,6 @@ Inspired by generative programming and weed :). So I was learning Elm language a
 - when you add **env variables** you can access the record with all of them
 
 It is the missing ingredient of Web Components architecture. Simple bundler for GraphQL based website using esmodules. What makes it unique? It uses browser for bundling (not node). Remember in ESModules you can use URL imports and relative imports. You can also provide importmap for other imports
-
-## Documentation
-
-[Documentation](https://aexol-studio.github.io/purplehaze/) for this project is hosted on Github Pages
-
-#### Config Injection
-
-Config file is injected and typed. It is available only inside `export default` and `export const head` function to prevent leaking of secrets.
-
-Usage in JS example:
-
-```js
-const graphQLClient = Chain(ssg.config.HOST, {
-  headers: {
-    Authorization: `Bearer ${ssg.config.TOKEN}`,
-  },
-});
-```
-
-## Assets
-
-You can use them as normally.
 
 ## Roadmap
 
@@ -57,11 +39,11 @@ You can use them as normally.
 - [x] Types from url streaming
 - [x] JSX, TSX support
 - [ ] Provide verbose info levels
-- [ ] Create docs and landing page deployable to pages
+- [x] Create docs and landing page deployable to pages
 - [ ] Resolve imports with no extension
-- [ ] catch esbuild transform errors
+- [x] catch esbuild transform errors
 - [x] support files exporting multiple static pages
 - [ ] Add possibility to override html tag
-- [ ] Create static gray matter typings for .md files
+- [x] Create static gray matter typings for .md files
 - [ ] Generate Routes typings for existing export default files
 - [ ] catch all errors including no network error
