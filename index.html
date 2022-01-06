@@ -5,7 +5,7 @@
       
       <script type="module" src="./index.js"></script><script type="module">
         import { hydrate } from "./index.js";
-        hydrate({"content":{"content":"\n# 😶‍🌫️ Purple haze\n\nInspired by generative programming and weed :). So I was learning Elm language at home usually in the evening and now I am missing all this generative stuff from Elm libs in TS.\n\n## What is generated?\n\n- when you type **URL** of an esmodule typings are fetched in the background and typings generated locally for intellisense\n- when you add **Markdown** files with gray matter it will generate typings for those\n- when you add a **Page** it will generate Route types so you won't make a mistake later when routing to another page\n- when you add **GraphQL** backends it will generate Zeus libraries for it making communication with GraphQL backend type safe\n- when you modify **config** you can access type safe values from it during build ssg process\n- when you add **env variables** you can access the record with all of them\n\nIt is the missing ingredient of Web Components architecture. Simple bundler for GraphQL based website using esmodules. What makes it unique? It uses browser for bundling (not node). Remember in ESModules you can use URL imports and relative imports. You can also provide importmap for other imports\n","data":{"link":"","title":""},"excerpt":""},"routes":[{"link":"import-from-url","title":"Import from URL"},{"link":"installation","title":"Installation"},{"link":"how-it-works","title":"How it works"},{"link":"helpers","title":"Helpers"},{"link":"graphql","title":"GraphQL"},{"link":"getting-started","title":"Getting Started"},{"link":"env-variables","title":"Envs"},{"link":"changelog","title":"Changelog"},{"link":"functions","title":"Functions"}],"prefix":"/purplehaze"})
+        hydrate({"content":{"content":"\n# 😶‍🌫️ Getting higher\n\nWelcome to the Purple Haze documentation!\n\nInspired by generative programming and weed :). So I was learning Elm language at home usually in the evening and now I am missing all this generative stuff from Elm libs in TS.\n\n## System requirements\n\n- NodeJS 12 or later\n- Mac, Win, Linux are supported\n\n## Setup\n\nInstall globally\n\n```sh\nnpm i -g purplehaze\n```\n\nor locally if you only wish to use it for one project\n\n```sh\nnpm i -D purplehaze\n```\n\n## Init\n\nInit a new project. This will create `purplehaze.json` in current directory. You don't need a `package.json` but you can add one for type completions.\n\n```sh\npurplehaze --init .\n```\n\nSet up config.\n\n```json\n{\n  \"graphql\": {\n    \"pokemon\": {\n      \"url\": \"https://graphql-pokemon2.vercel.app/\"\n    }\n  },\n  \"in\": \"./pages\",\n  \"out\": \"./out\",\n  \"websocketPort\": 1414,\n  \"port\": 8080\n}\n```\n\nSo you need to provide your schema url ( you can declare multiple schemas ) ,in and out dirs for purplehaze\n\nYou can also add headers if needed:\n\n```json\n{\n  \"graphql\": {\n    \"pokemon\": {\n      \"url\": \"https://graphql-pokemon2.vercel.app/\",\n      \"headers\": {\n        \"Authorization\": \"Bearer MyToken\"\n      }\n    }\n  },\n  \"in\": \"./pages\",\n  \"out\": \"./out\",\n  \"websocketPort\": 1414,\n  \"port\": 8080\n}\n```\n\nWatch\n\n```sh\npurplehaze\n```\n\nBuild\n\n```sh\npurplehaze --build\n```\n","data":{"link":"","title":""},"excerpt":""},"routes":[{"title":"Pages","link":"pages","order":1},{"title":"Import from URL","link":"import-from-url","order":2},{"link":"configuration","title":"Configuration","order":3},{"link":"graphql","title":"GraphQL","order":4},{"title":"Markdown","link":"markdown","order":5},{"link":"env-variables","title":"Envs","order":6},{"link":"changelog","title":"Changelog","order":99}],"prefix":"/purplehaze"})
       </script>
 
     <link rel="stylesheet" href="./tw.css" />
@@ -13,18 +13,61 @@
   
     </head>
     <body>
-      <div class="flex mx-auto h-full"><div class="absolute sm:hidden block cursor-pointer top-6 right-6"><div class="h-2 w-10 bg-purple-900 mb-2 rounded"></div><div class="h-2 w-10 bg-purple-900 mb-2 rounded"></div><div class="h-2 w-10 bg-purple-900 mb-2 rounded"></div></div><div class="py-10 px-20 bg-gray-100 h-full w-80 sm:block hidden"><a class="block py-4 text-lg text-purple-900 font-black" href="/purplehaze/">Purple haze</a><a class="block py-4 text-md" href="/purplehaze/page/import-from-url.html">Import from URL</a><a class="block py-4 text-md" href="/purplehaze/page/installation.html">Installation</a><a class="block py-4 text-md" href="/purplehaze/page/how-it-works.html">How it works</a><a class="block py-4 text-md" href="/purplehaze/page/helpers.html">Helpers</a><a class="block py-4 text-md" href="/purplehaze/page/graphql.html">GraphQL</a><a class="block py-4 text-md" href="/purplehaze/page/getting-started.html">Getting Started</a><a class="block py-4 text-md" href="/purplehaze/page/env-variables.html">Envs</a><a class="block py-4 text-md" href="/purplehaze/page/changelog.html">Changelog</a><a class="block py-4 text-md" href="/purplehaze/page/functions.html">Functions</a></div><div class="container mx-auto p-10 h-full overflow-auto"><div class="prose"><h1>😶‍🌫️ Purple haze</h1>
+      <div class="h-full flex flex-col"><div class="w-full sm:flex hidden px-10 border-b border-purple-200 items-center"><a class="block py-4 text-xl logo font-black" href="/purplehaze/">Purple haze</a><span class="text-gray-400 block ml-2 text-md mt-1">Bundler that puffs in the browser</span><span class="ml-auto mr-2 text-gray-500">0.0.4</span><a href="https://github.com/aexol-studio/purplehaze" class="text-purple-500" title="Github repository"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></div><div class="flex w-full flex-1 overflow-hidden"><div class="absolute sm:hidden block cursor-pointer top-6 right-6"><div class="h-2 w-10 bg-purple-500 mb-2 rounded"></div><div class="h-2 w-10 bg-purple-500 mb-2 rounded"></div><div class="h-2 w-10 bg-purple-500 mb-2 rounded"></div></div><div class="py-6 px-10 w-80 sm:block hidden  border-r border-purple-200"><a class="transition-all block py-3 text-md font-medium text-gray-600 hover:text-purple-600" href="/purplehaze/page/pages.html">Pages</a><a class="transition-all block py-3 text-md font-medium text-gray-600 hover:text-purple-600" href="/purplehaze/page/import-from-url.html">Import from URL</a><a class="transition-all block py-3 text-md font-medium text-gray-600 hover:text-purple-600" href="/purplehaze/page/configuration.html">Configuration</a><a class="transition-all block py-3 text-md font-medium text-gray-600 hover:text-purple-600" href="/purplehaze/page/graphql.html">GraphQL</a><a class="transition-all block py-3 text-md font-medium text-gray-600 hover:text-purple-600" href="/purplehaze/page/markdown.html">Markdown</a><a class="transition-all block py-3 text-md font-medium text-gray-600 hover:text-purple-600" href="/purplehaze/page/env-variables.html">Envs</a><a class="transition-all block py-3 text-md font-medium text-gray-600 hover:text-purple-600" href="/purplehaze/page/changelog.html">Changelog</a></div><div class="container mx-auto px-20 py-6 pb-20 h-full overflow-auto"><div class="prose prose-lg"><h1>😶‍🌫️ Getting higher</h1>
+<p>Welcome to the Purple Haze documentation!</p>
 <p>Inspired by generative programming and weed :). So I was learning Elm language at home usually in the evening and now I am missing all this generative stuff from Elm libs in TS.</p>
-<h2>What is generated?</h2>
+<h2>System requirements</h2>
 <ul>
-<li>when you type <strong>URL</strong> of an esmodule typings are fetched in the background and typings generated locally for intellisense</li>
-<li>when you add <strong>Markdown</strong> files with gray matter it will generate typings for those</li>
-<li>when you add a <strong>Page</strong> it will generate Route types so you won't make a mistake later when routing to another page</li>
-<li>when you add <strong>GraphQL</strong> backends it will generate Zeus libraries for it making communication with GraphQL backend type safe</li>
-<li>when you modify <strong>config</strong> you can access type safe values from it during build ssg process</li>
-<li>when you add <strong>env variables</strong> you can access the record with all of them</li>
+<li>NodeJS 12 or later</li>
+<li>Mac, Win, Linux are supported</li>
 </ul>
-<p>It is the missing ingredient of Web Components architecture. Simple bundler for GraphQL based website using esmodules. What makes it unique? It uses browser for bundling (not node). Remember in ESModules you can use URL imports and relative imports. You can also provide importmap for other imports</p>
-</div></div></div>
+<h2>Setup</h2>
+<p>Install globally</p>
+<pre><code class="language-sh">npm i -g purplehaze
+</code></pre>
+<p>or locally if you only wish to use it for one project</p>
+<pre><code class="language-sh">npm i -D purplehaze
+</code></pre>
+<h2>Init</h2>
+<p>Init a new project. This will create <code>purplehaze.json</code> in current directory. You don't need a <code>package.json</code> but you can add one for type completions.</p>
+<pre><code class="language-sh">purplehaze --init .
+</code></pre>
+<p>Set up config.</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"graphql"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"pokemon"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">"url"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"https://graphql-pokemon2.vercel.app/"</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"in"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"./pages"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"out"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"./out"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"websocketPort"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1414</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"port"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">8080</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>So you need to provide your schema url ( you can declare multiple schemas ) ,in and out dirs for purplehaze</p>
+<p>You can also add headers if needed:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">"graphql"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">"pokemon"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">"url"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"https://graphql-pokemon2.vercel.app/"</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">"headers"</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+        <span class="hljs-attr">"Authorization"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"Bearer MyToken"</span>
+      <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"in"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"./pages"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"out"</span><span class="hljs-punctuation">:</span> <span class="hljs-string">"./out"</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"websocketPort"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1414</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">"port"</span><span class="hljs-punctuation">:</span> <span class="hljs-number">8080</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p>Watch</p>
+<pre><code class="language-sh">purplehaze
+</code></pre>
+<p>Build</p>
+<pre><code class="language-sh">purplehaze --build
+</code></pre>
+</div></div></div></div>
     </body>
   </html>

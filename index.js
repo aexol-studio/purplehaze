@@ -1,17 +1,18 @@
 import React from "https://cdn.skypack.dev/react";
 import ReactDOM from "https://cdn.skypack.dev/react-dom";
-import {md} from "./ssg/md.js";
 import {htmlContent} from "./ssg/markdown.js";
 import {Layout} from "./Layout.js";
-import {html} from "./ssg/basic.js";
 import {routes} from "./markdownRoutes.js";
+import {renderMarkdown} from "./mdtransform.js";
 const IndexPage = ({data: data2}) => {
   return /* @__PURE__ */ React.createElement(Layout, {
     prefix: data2.prefix,
     routes: data2.routes
   }, /* @__PURE__ */ React.createElement("div", {
-    className: "prose",
-    dangerouslySetInnerHTML: {__html: md`${data2.content.content}`}
+    className: "prose prose-lg",
+    dangerouslySetInnerHTML: {
+      __html: renderMarkdown.render(data2.content.content)
+    }
   }));
 };
 const data = () => {
@@ -22,7 +23,7 @@ const data = () => {
   };
 };
 const head = () => {
-  return html`
+  return `
     <link rel="stylesheet" href="./tw.css" />
     <title>Purple haze docs</title>
   `;
