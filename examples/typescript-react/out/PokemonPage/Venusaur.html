@@ -4,8 +4,12 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       
       <script type="module" src="./../PokemonPage.js"></script><script type="module">
-        import { hydrate } from "./../PokemonPage.js";
-        hydrate({"number":"003","name":"Venusaur","image":"https://img.pokemondb.net/artwork/venusaur.jpg","types":["Grass","Poison"],"resistant":["Water","Electric","Grass","Fighting","Fairy"],"weaknesses":["Fire","Ice","Flying","Psychic"]})
+          const m = await import("./../PokemonPage.js");
+          const Component = m.default;
+        
+        if(m && m.hydrate){
+          m.hydrate({"number":"003","name":"Venusaur","image":"https://img.pokemondb.net/artwork/venusaur.jpg","types":["Grass","Poison"],"resistant":["Water","Electric","Grass","Fighting","Fairy"],"weaknesses":["Fire","Ice","Flying","Psychic"]})
+        }
       </script>
 
         <title>Venusaur</title>

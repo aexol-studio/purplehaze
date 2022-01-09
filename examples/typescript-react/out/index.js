@@ -1,17 +1,17 @@
+// pages/index.tsx
 import {Chain} from "./ssg/pokemon/index.js";
 import React from "https://cdn.skypack.dev/react";
-import ReactDOM from "https://cdn.skypack.dev/react-dom";
 import {SinglePokemon} from "./SinglePokemon.js";
-const head = async () => `
+var head = async () => `
     <title>Pokemon</title>
   `;
-const PokemonApp = ({response}) => {
-  return /* @__PURE__ */ React.createElement("div", null, response?.pokemons.map((p) => /* @__PURE__ */ React.createElement(SinglePokemon, {
+var pages_default = (props) => {
+  return /* @__PURE__ */ React.createElement("div", null, props?.pokemons?.map((p) => /* @__PURE__ */ React.createElement(SinglePokemon, {
     key: p.name,
     ...p
   })));
 };
-const data = async () => {
+var data = async () => {
   const Fetch = Chain(ssg.config.graphql.pokemon.url, {
     headers: {
       "Content-Type": "application/json"
@@ -31,19 +31,8 @@ const data = async () => {
     ]
   });
 };
-const hydrate = async (staticData) => ReactDOM.hydrate(/* @__PURE__ */ React.createElement(PokemonApp, {
-  response: staticData
-}), document.body);
-var stdin_default = async (staticData) => {
-  const renderBody = document.createElement("div");
-  ReactDOM.render(/* @__PURE__ */ React.createElement(PokemonApp, {
-    response: staticData
-  }), renderBody);
-  return renderBody.innerHTML;
-};
 export {
   data,
-  stdin_default as default,
-  head,
-  hydrate
+  pages_default as default,
+  head
 };

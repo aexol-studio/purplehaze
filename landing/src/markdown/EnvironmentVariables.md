@@ -1,6 +1,6 @@
 ---
 link: env-variables
-title: Envs
+title: Environment Variables
 order: 6
 ---
 

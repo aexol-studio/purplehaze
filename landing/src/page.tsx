@@ -1,9 +1,8 @@
 import React from 'https://cdn.skypack.dev/react';
-import ReactDOM from 'https://cdn.skypack.dev/react-dom';
-import { htmlContent } from './ssg/markdown.js';
-import { Layout } from './Layout.js';
-import { routes } from './markdownRoutes.js';
-import { renderMarkdown } from './mdtransform.js';
+import { htmlContent } from './ssg/markdown';
+import { Layout } from './Layout';
+import { routes } from './markdownRoutes';
+import { renderMarkdown } from './mdtransform';
 
 const CustomPage: React.FC<{
   data: {
@@ -39,32 +38,21 @@ export const data = () => {
 
 type DataType = ReturnType<typeof data>;
 
-export const hydrate = async (staticData: {
+export default (staticData: {
   content: DataType['htmlContent'][keyof DataType['htmlContent']];
   routes: DataType['routes'];
   activeRoute?: string;
   prefix?: string;
-}) => ReactDOM.hydrate(<CustomPage data={staticData} />, document.body);
+}) => {
+  return <CustomPage data={staticData} />;
+};
 
 export const pages = async (staticData: DataType) => {
   return await Promise.all(
     Object.entries(staticData.htmlContent)
       .filter(([, v]) => !!v.data.link)
       .map(async ([k, v], i) => {
-        const renderBody = document.createElement('div');
-        ReactDOM.render(
-          <CustomPage
-            data={{
-              content: v,
-              routes: routes(staticData.htmlContent),
-              activeRoute: v.data.link,
-              prefix: staticData.prefix,
-            }}
-          />,
-          renderBody,
-        );
         return {
-          body: renderBody.innerHTML,
           data: {
             content: v,
             routes: routes(staticData.htmlContent),

@@ -24,8 +24,18 @@ export const HtmlSkeletonStatic = ({
       ${`<script type="module" src="./${scriptName}"></script>`}${
   data
     ? `<script type="module">
-        import { hydrate } from "./${scriptName}";
-        hydrate(${JSON.stringify(data)})
+          const m = await import("./${scriptName}");
+          const Component = m.default;
+        ${
+          hydrate
+            ? `
+            import ReactDOM from 'https://cdn.skypack.dev/react-dom';
+            ReactDOM.hydrate(Component(${JSON.stringify(data)}),document.body)`
+            : `
+        if(m && m.hydrate){
+          m.hydrate(${JSON.stringify(data)})
+        }`
+        }
       </script>`
     : ''
 }${head ? `\n${head}` : ''}

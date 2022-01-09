@@ -43,10 +43,10 @@ export const getPossibleFilePaths = (p: string) =>
 export const isStaticFile = (p: string) =>
   !isJSFile(p) && !isTypingsFile(p) && !isTSFile(p) && !isMd(p) && !isEnv(p);
 
-export const mkFileDirSync = (p: string) => {
+export const mkFileDirSync = async (p: string) => {
   const dir = path.dirname(p);
   if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
+    await fs.promises.mkdir(dir, { recursive: true });
   }
 };
 
@@ -55,10 +55,10 @@ export const existsJSONOrDefaultSync = (p: string, defaultValue: any) =>
     ? JSON.parse(fs.readFileSync(p).toString('utf-8'))
     : defaultValue;
 
-export const fileWriteRecuirsiveSync = (
+export const fileWriteRecuirsiveAsync = async (
   p: string,
-  data: string | NodeJS.ArrayBufferView,
+  data: string | Uint8Array,
 ) => {
-  mkFileDirSync(p);
-  fs.writeFileSync(p, data);
+  await mkFileDirSync(p);
+  fs.promises.writeFile(p, data);
 };

@@ -24,7 +24,7 @@ Config file can be generated or created manually. It should contain all the foll
 
 #### Typescript
 
-Turn on typescript support URL imports also works here. Of course you can still import relative modules.
+URL imports also works here. Of course you can still import relative modules.
 
 ```json
 {
@@ -36,8 +36,7 @@ Turn on typescript support URL imports also works here. Of course you can still 
   "in": "./pages",
   "out": "./out",
   "websocketPort": 1416,
-  "port": 8082,
-  "mode": "typescript"
+  "port": 8082
 }
 ```
 

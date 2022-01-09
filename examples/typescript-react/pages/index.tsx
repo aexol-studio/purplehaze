@@ -7,10 +7,10 @@ export const head = async () => `
     <title>Pokemon</title>
   `;
 
-const PokemonApp = ({ response }: { response?: any }) => {
+export default (props: DataType) => {
   return (
     <div>
-      {response?.pokemons.map((p: any) => (
+      {props?.pokemons?.map((p: any) => (
         <SinglePokemon key={p.name} {...p} />
       ))}
     </div>
@@ -40,12 +40,3 @@ export const data = async () => {
 };
 
 type DataType = ReturnType<typeof data> extends Promise<infer R> ? R : never;
-
-export const hydrate = async (staticData: DataType) =>
-  ReactDOM.hydrate(<PokemonApp response={staticData} />, document.body);
-
-export default async (staticData: DataType) => {
-  const renderBody = document.createElement('div');
-  ReactDOM.render(<PokemonApp response={staticData} />, renderBody);
-  return renderBody.innerHTML;
-};

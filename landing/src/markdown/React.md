@@ -1,3 +1,12 @@
+---
+link: react
+title: React
+order: 6
+---
+
+To use `purplehaze` with `React` normally export a component as a default function consuming `data` function result. You can also return `React` component from head function
+
+```tsx
 import React from 'https://cdn.skypack.dev/react';
 import { htmlContent } from './ssg/markdown';
 import { Layout } from './Layout';
@@ -35,3 +44,4 @@ export const head = () => {
 };
 
 type DataType = ReturnType<typeof data>;
+```

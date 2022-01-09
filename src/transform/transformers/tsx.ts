@@ -1,29 +1,25 @@
 import { ConfigFile } from '@/config';
-import ts from 'typescript';
-import { transform } from 'esbuild';
+import { build } from 'esbuild';
 import { message } from '@/console';
-import { fileWriteRecuirsiveSync } from '@/fsAddons';
 import { pathGenerated, pathIn } from '@/paths';
-import fs from 'fs';
 
 export const transformTsx = (config: ConfigFile) => async (
   tsFiles: string[],
 ) => {
-  const tsconfig = JSON.parse(
-    fs.readFileSync('./tsconfig.json').toString('utf-8'),
-  );
   try {
     return Promise.all(
       tsFiles.map(async (tsFile) => {
-        const transpiled = await transpileTS(
-          fs.readFileSync(pathIn(config)(tsFile)).toString('utf-8'),
-          tsFile.endsWith('tsx') ? 'tsx' : 'ts',
-          tsconfig,
-        );
-        const newJsFile = tsFile.replace(/\.tsx?$/, '.js');
+        const isReact = tsFile.endsWith('x');
+        const newJsFile = tsFile.replace(/x$/, '').replace(/\.ts$/, '.js');
         const jsFileName = pathGenerated(newJsFile);
-        fileWriteRecuirsiveSync(jsFileName, transpiled.code);
-        return newJsFile;
+
+        const fileToTranspilePath = pathIn(config)(tsFile);
+        await transpileTS(
+          fileToTranspilePath,
+          jsFileName,
+          isReact ? 'tsx' : 'ts',
+          './tsconfig.json',
+        );
       }),
     );
   } catch (error) {
@@ -35,14 +31,37 @@ export const transformTsx = (config: ConfigFile) => async (
 };
 
 export const transpileTS = (
-  code: string,
+  filePath: string,
+  outfile: string,
   loader: 'ts' | 'tsx',
-  options: ts.TranspileOptions,
+  options: string,
 ) => {
-  return transform(code, {
-    tsconfigRaw: JSON.stringify(options),
-    loader,
+  return build({
+    entryPoints: [filePath],
+    outfile,
+    tsconfig: options,
+    loader: {
+      '.ts': loader,
+      '.tsx': loader,
+      '.js': loader,
+      '.jsx': loader,
+    },
     format: 'esm',
+    bundle: true,
+    plugins: [
+      {
+        name: 'resolve-ts-to-js',
+        setup(build) {
+          build.onResolve({ filter: /.*/ }, (args) => {
+            if (args.kind === 'entry-point') return;
+            let path = args.path;
+            if (!path.endsWith('.js') && !path.startsWith('http'))
+              path += '.js';
+            return { path, external: true };
+          });
+        },
+      },
+    ],
   });
 };
 

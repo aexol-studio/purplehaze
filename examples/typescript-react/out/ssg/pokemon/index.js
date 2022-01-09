@@ -1,4 +1,5 @@
-const AllTypesProps = {
+// pages/ssg/pokemon/index.ts
+var AllTypesProps = {
   Query: {
     pokemons: {
       first: {
@@ -24,7 +25,7 @@ const AllTypesProps = {
     }
   }
 };
-const ReturnTypes = {
+var ReturnTypes = {
   Query: {
     query: "Query",
     pokemons: "Pokemon",
@@ -66,7 +67,7 @@ const ReturnTypes = {
     name: "String"
   }
 };
-class GraphQLError extends Error {
+var GraphQLError = class extends Error {
   constructor(response) {
     super("");
     this.response = response;
@@ -75,9 +76,9 @@ class GraphQLError extends Error {
   toString() {
     return "GraphQL Response Error";
   }
-}
-const ZeusSelect = () => (t) => t;
-const ScalarResolver = (scalar, value) => {
+};
+var ZeusSelect = () => (t) => t;
+var ScalarResolver = (scalar, value) => {
   switch (scalar) {
     case "String":
       return `${JSON.stringify(value)}`;
@@ -97,7 +98,7 @@ const ScalarResolver = (scalar, value) => {
       return false;
   }
 };
-const TypesPropsResolver = ({
+var TypesPropsResolver = ({
   value,
   type,
   name,
@@ -149,7 +150,7 @@ const TypesPropsResolver = ({
   }
   return reslovedScalar;
 };
-const isArrayFunction = (parent, a) => {
+var isArrayFunction = (parent, a) => {
   const [values, r] = a;
   const [mainKey, key, ...keys] = parent;
   const keyValues = Object.keys(values).filter((k) => typeof values[k] !== "undefined");
@@ -174,9 +175,9 @@ const isArrayFunction = (parent, a) => {
   })}`).join(",")})${r ? traverseToSeekArrays(parent, r) : ""}` : traverseToSeekArrays(parent, r);
   return argumentString;
 };
-const resolveKV = (k, v) => typeof v === "boolean" ? k : typeof v === "object" ? `${k}{${objectToTree(v)}}` : `${k}${v}`;
-const objectToTree = (o) => `{${Object.keys(o).map((k) => `${resolveKV(k, o[k])}`).join(" ")}}`;
-const traverseToSeekArrays = (parent, a) => {
+var resolveKV = (k, v) => typeof v === "boolean" ? k : typeof v === "object" ? `${k}{${objectToTree(v)}}` : `${k}${v}`;
+var objectToTree = (o) => `{${Object.keys(o).map((k) => `${resolveKV(k, o[k])}`).join(" ")}}`;
+var traverseToSeekArrays = (parent, a) => {
   if (!a)
     return "";
   if (Object.keys(a).length === 0) {
@@ -205,8 +206,8 @@ const traverseToSeekArrays = (parent, a) => {
   }
   return objectToTree(b);
 };
-const buildQuery = (type, a) => traverseToSeekArrays([type], a);
-const inspectVariables = (query) => {
+var buildQuery = (type, a) => traverseToSeekArrays([type], a);
+var inspectVariables = (query) => {
   const regex = /\$\b\w*__ZEUS_VAR__\[?[^!^\]^\s^,^\)^\}]*[!]?[\]]?[!]?/g;
   let result;
   const AllVariables = [];
@@ -227,13 +228,13 @@ const inspectVariables = (query) => {
   });
   return `(${AllVariables.map((a) => a.split("__ZEUS_VAR__")).map(([variableName, variableType]) => `${variableName}:${variableType}`).join(", ")})${filteredQuery}`;
 };
-const queryConstruct = (t, tName, operationName) => (o) => `${t.toLowerCase()}${operationName ? " " + operationName : ""}${inspectVariables(buildQuery(tName, o))}`;
-const fullChainConstruct = (fn) => (t, tName) => (o, options) => fn(queryConstruct(t, tName, options?.operationName)(o), options?.variables).then((r) => {
+var queryConstruct = (t, tName, operationName) => (o) => `${t.toLowerCase()}${operationName ? " " + operationName : ""}${inspectVariables(buildQuery(tName, o))}`;
+var fullChainConstruct = (fn) => (t, tName) => (o, options) => fn(queryConstruct(t, tName, options?.operationName)(o), options?.variables).then((r) => {
   seekForAliases(r);
   return r;
 });
-const fullSubscriptionConstruct = (fn) => (t, tName) => (o, options) => fn(queryConstruct(t, tName, options?.operationName)(o));
-const seekForAliases = (response) => {
+var fullSubscriptionConstruct = (fn) => (t, tName) => (o, options) => fn(queryConstruct(t, tName, options?.operationName)(o));
+var seekForAliases = (response) => {
   const traverseAlias = (value) => {
     if (Array.isArray(value)) {
       value.forEach(seekForAliases);
@@ -261,9 +262,9 @@ const seekForAliases = (response) => {
     });
   }
 };
-const $ = (t) => `ZEUS_VAR$${t.join("")}`;
-const resolverFor = (type, field, fn) => fn;
-const handleFetchResponse = (response) => {
+var $ = (t) => `ZEUS_VAR$${t.join("")}`;
+var resolverFor = (type, field, fn) => fn;
+var handleFetchResponse = (response) => {
   if (!response.ok) {
     return new Promise((_, reject) => {
       response.text().then((text) => {
@@ -277,7 +278,7 @@ const handleFetchResponse = (response) => {
   }
   return response.json();
 };
-const apiFetch = (options) => (query, variables = {}) => {
+var apiFetch = (options) => (query, variables = {}) => {
   let fetchFunction = fetch;
   let queryString = query;
   let fetchOptions = options[1] || {};
@@ -304,7 +305,7 @@ const apiFetch = (options) => (query, variables = {}) => {
     return response.data;
   });
 };
-const apiSubscription = (options) => (query) => {
+var apiSubscription = (options) => (query) => {
   try {
     const queryString = options[0] + "?query=" + encodeURIComponent(query);
     const wsString = queryString.replace("http", "ws");
@@ -339,15 +340,15 @@ const apiSubscription = (options) => (query) => {
     throw new Error("No websockets implemented");
   }
 };
-const allOperations = {
+var allOperations = {
   "query": "Query"
 };
-const Thunder = (fn) => (operation) => (o, ops) => fullChainConstruct(fn)(operation, allOperations[operation])(o, ops);
-const Chain = (...options) => Thunder(apiFetch(options));
-const SubscriptionThunder = (fn) => (operation) => (o, ops) => fullSubscriptionConstruct(fn)(operation, allOperations[operation])(o, ops);
-const Subscription = (...options) => SubscriptionThunder(apiSubscription(options));
-const Zeus = (operation, o, operationName) => queryConstruct(operation, allOperations[operation], operationName)(o);
-const Selector = (key) => ZeusSelect();
+var Thunder = (fn) => (operation) => (o, ops) => fullChainConstruct(fn)(operation, allOperations[operation])(o, ops);
+var Chain = (...options) => Thunder(apiFetch(options));
+var SubscriptionThunder = (fn) => (operation) => (o, ops) => fullSubscriptionConstruct(fn)(operation, allOperations[operation])(o, ops);
+var Subscription = (...options) => SubscriptionThunder(apiSubscription(options));
+var Zeus = (operation, o, operationName) => queryConstruct(operation, allOperations[operation], operationName)(o);
+var Selector = (key) => ZeusSelect();
 export {
   $,
   AllTypesProps,

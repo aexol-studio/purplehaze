@@ -1,9 +1,10 @@
 import fetch from 'node-fetch';
 import { ConfigFile } from '@/config';
 import { message } from '@/console';
-import { fileWriteRecuirsiveSync } from '@/fsAddons';
+import { fileWriteRecuirsiveAsync } from '@/fsAddons';
 import { getTsConfig, updateTSConfig } from '@/transpilerConfig';
 import { pathGeneratedTypings } from '@/paths';
+import fs from 'fs';
 
 const URL_REGEX = new RegExp(/^import.*(https:\/\/.*)\/(.*)['|"]/gm);
 
@@ -116,18 +117,30 @@ export const downloadTypings = async (
   filesContent: string[],
 ) => {
   const compilerConfig = getTsConfig(configFile);
-  const packages = mergePackages(filesContent).filter(
-    (p) =>
-      !compilerConfig.compilerOptions?.paths?.[`${p.url}/${p.packageName}`],
-  );
+  const packages = mergePackages(filesContent).filter((p) => {
+    const packagePath = `${p.url}/${p.packageName}`;
+    const pathExist = !!compilerConfig.compilerOptions?.paths?.[packagePath];
+    if (!pathExist) {
+      return true;
+    }
+    const typingsExist = fs.existsSync(
+      pathGeneratedTypings(p.packageName, 'index.d.ts'),
+    );
+    if (!typingsExist) {
+      return true;
+    }
+    return false;
+  });
   const ts = await fetchTypings(packages);
   const paths: Record<string, string[]> = {};
-  ts.forEach((t) => {
-    const typingsPath = pathGeneratedTypings(t.p.packageName, 'index.d.ts');
-    message(`Installing typings for "${t.p.packageName}"`, 'yellowBright');
-    fileWriteRecuirsiveSync(typingsPath, t.typings);
-    paths[`${t.p.url}/${t.p.packageName}`] = [typingsPath];
-  });
+  await Promise.all(
+    ts.map(async (t) => {
+      const typingsPath = pathGeneratedTypings(t.p.packageName, 'index.d.ts');
+      message(`Installing typings for "${t.p.packageName}"`, 'yellowBright');
+      await fileWriteRecuirsiveAsync(typingsPath, t.typings);
+      paths[`${t.p.url}/${t.p.packageName}`] = [typingsPath];
+    }),
+  );
   updateTSConfig(configFile, (tsConfig) => {
     return {
       ...tsConfig,

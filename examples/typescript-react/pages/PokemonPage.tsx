@@ -1,9 +1,8 @@
 import { Chain } from './ssg/pokemon/index.js';
 import React from 'https://cdn.skypack.dev/react';
-import ReactDOM from 'https://cdn.skypack.dev/react-dom';
 import { SinglePokemon } from './SinglePokemon.js';
 
-const PokemonApp = (staticData: any) => {
+export default (staticData: SingleData) => {
   return (
     <div>
       <SinglePokemon {...staticData} />
@@ -38,16 +37,10 @@ type SingleData = Required<DataType>['pokemons'] extends Array<infer R>
   ? Required<R>
   : never;
 
-export const hydrate = async (staticData: DataType) =>
-  ReactDOM.hydrate(<PokemonApp {...staticData} />, document.body);
-
 export const pages = (staticData: DataType) => {
   return staticData.pokemons?.map((p) => {
-    const renderBody = document.createElement('div');
-    ReactDOM.render(<PokemonApp {...p} />, renderBody);
     return {
       slug: p.name?.split(' ')[0],
-      body: renderBody.innerHTML,
       data: p,
       head: `
         <title>${p.name || ''}</title>

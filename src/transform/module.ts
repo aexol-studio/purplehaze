@@ -24,6 +24,7 @@ interface EventResult {
   pages?: Page[];
   data?: any;
   head?: string;
+  hydrate?: boolean;
 }
 export const sendAndReceiveCode = (
   filePath: string,
@@ -65,7 +66,9 @@ export const sendAndReceiveCode = (
         JSON.stringify({
           code: `${Math.random().toString(32)}/${filePath}`,
           type: 'initial',
+          react: filePath.endsWith('x'),
           operationId,
+          name: filePath,
         }),
       );
     });
@@ -81,6 +84,7 @@ export const bundle = async ({
   config: ConfigFile;
 }): Promise<{ pages?: Page[]; content?: string } | undefined> => {
   const socketResult = await sendAndReceiveCode(name, config);
+
   if (!socketResult) {
     return;
   }
@@ -92,6 +96,7 @@ export const bundle = async ({
           ...b,
           scriptName: path.join('..', name),
           cssName: css ? path.join('..', css) : undefined,
+          hydrate: socketResult.hydrate,
         }),
       })),
     };
@@ -103,6 +108,7 @@ export const bundle = async ({
       head: socketResult.head as string,
       scriptName: name,
       cssName: css,
+      hydrate: socketResult.hydrate,
     }),
   };
 };

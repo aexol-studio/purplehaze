@@ -4,8 +4,12 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       
       <script type="module" src="./../PokemonPage.js"></script><script type="module">
-        import { hydrate } from "./../PokemonPage.js";
-        hydrate({"number":"004","name":"Charmander","image":"https://img.pokemondb.net/artwork/charmander.jpg","types":["Fire"],"resistant":["Fire","Grass","Ice","Bug","Steel","Fairy"],"weaknesses":["Water","Ground","Rock"]})
+          const m = await import("./../PokemonPage.js");
+          const Component = m.default;
+        
+        if(m && m.hydrate){
+          m.hydrate({"number":"004","name":"Charmander","image":"https://img.pokemondb.net/artwork/charmander.jpg","types":["Fire"],"resistant":["Fire","Grass","Ice","Bug","Steel","Fairy"],"weaknesses":["Water","Ground","Rock"]})
+        }
       </script>
 
         <title>Charmander</title>

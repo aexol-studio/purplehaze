@@ -11,7 +11,14 @@
     "noEmit": true,
     "jsx": "react",
     "baseUrl": "./",
-    "paths": {}
+    "paths": {
+      "https://cdn.skypack.dev/react": [
+        ".purplehaze/typings/react/index.d.ts"
+      ],
+      "https://cdn.skypack.dev/react-dom": [
+        ".purplehaze/typings/react-dom/index.d.ts"
+      ]
+    }
   },
   "include": [
     "./pages/**/*.tsx",

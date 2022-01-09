@@ -6,6 +6,7 @@ import { browserHtml } from '@/browserHtml';
 import { runBrowser } from '@/browser';
 import { createServer } from 'net';
 import fs from 'fs';
+import path from 'path';
 import { pathGenerated } from '@/paths';
 import { envLoader } from '@/loaders/env';
 
@@ -59,7 +60,11 @@ export const initBrowserBundler = async ({
     const requestURL = req.url;
     if (requestURL === '/' || !requestURL) {
       res.writeHead(200, { 'content-type': 'text/html' });
-      res.write(browserHtml(config));
+      const rendererFile = fs
+        .readFileSync(path.join(__dirname, './renderer.js'))
+        .toString('utf-8')
+        .replace('{{WEBSOCKET_PORT}}', config.websocketPort + '');
+      res.write(browserHtml(rendererFile));
     } else {
       const [, , ...fileNames] = requestURL.split('/');
       const fileName = fileNames.join('/');

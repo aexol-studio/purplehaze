@@ -35,11 +35,12 @@
   "exclude": [
     "lib",
     "node_modules",
-    "__tests__",
+    "src/__tests__/**/*",
     "examples",
     "landing",
     "out",
     "jest.config.ts",
+    "src/serve/renderer.js",
     "coverage"
   ]
 }

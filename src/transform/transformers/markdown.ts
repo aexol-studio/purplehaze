@@ -1,5 +1,5 @@
 import { message } from '@/console';
-import { fileWriteRecuirsiveSync } from '@/fsAddons';
+import { fileWriteRecuirsiveAsync } from '@/fsAddons';
 import { pathIn, pathSsg } from '@/paths';
 import matter from 'gray-matter';
 import fs from 'fs';
@@ -15,7 +15,7 @@ export const transformMarkdownFiles = (config: ConfigFile) => async (
   try {
     await Promise.all(
       mdFiles.map(async (mdFile) => {
-        const m = matter(fs.readFileSync(pathIn(config)(mdFile)));
+        const m = matter(await fs.promises.readFile(pathIn(config)(mdFile)));
         generatedMdLib[mdFile] = {
           content: m.content,
           data: m.data,
@@ -29,7 +29,7 @@ export const transformMarkdownFiles = (config: ConfigFile) => async (
     }
     return;
   }
-  fileWriteRecuirsiveSync(
+  await fileWriteRecuirsiveAsync(
     pathSsg(config)('markdown.ts'),
     `export const htmlContent = ${JSON.stringify(
       generatedMdLib,

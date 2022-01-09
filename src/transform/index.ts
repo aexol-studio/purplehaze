@@ -6,7 +6,7 @@ import { GenerateGlobalTypings } from '@/transform/fn';
 import { calcTime, message } from '@/console';
 import { downloadTypings } from '@/typeFetcher';
 import {
-  fileWriteRecuirsiveSync,
+  fileWriteRecuirsiveAsync,
   isDirectory,
   isJSFile,
   isStaticFile,
@@ -97,7 +97,7 @@ export const injectHtmlFile = async ({
 };
 
 export const generateBasicTypingsFiles = async (config: ConfigFile) => {
-  envTransformer(config);
+  await envTransformer(config);
 };
 
 export const generateTypingsFiles = async ({
@@ -114,7 +114,7 @@ export const generateTypingsFiles = async ({
     schema,
   });
   const ssgPath = pathSsg(config);
-  fileWriteRecuirsiveSync(ssgPath(name, 'index.ts'), typings);
+  await fileWriteRecuirsiveAsync(ssgPath(name, 'index.ts'), typings);
 };
 
 export const transformFiles = async ({ config }: { config: ConfigFile }) => {
@@ -131,15 +131,19 @@ export const transformFiles = async ({ config }: { config: ConfigFile }) => {
 
   const jsFiles = await readFiles(isJSFile)(PATH_GENERATED);
 
-  const rf = jsFiles.map((f) => ({
-    name: f,
-    path: pathOut(config)(f),
-    content: fs.readFileSync(pathGenerated(f)),
-  }));
+  const rf = await Promise.all(
+    jsFiles.map(async (f) => ({
+      name: f,
+      path: pathOut(config)(f),
+      content: await fs.promises.readFile(pathGenerated(f)),
+    })),
+  );
 
-  rf.forEach((outFile) => {
-    fileWriteRecuirsiveSync(outFile.path, outFile.content);
-  });
+  await Promise.all(
+    rf.map(async (outFile) =>
+      fileWriteRecuirsiveAsync(outFile.path, outFile.content),
+    ),
+  );
   await downloadTypings(
     config,
     rf.map((r) => r.content.toString('utf-8')),
@@ -159,35 +163,44 @@ export const generateHtmlFiles = (config: ConfigFile) => async (
     )
   ).filter((f) => f.code);
   message(`Writing out ${htmlFiles.length} pages.`, 'yellow');
-  htmlFiles.forEach(({ name, code }) => {
-    if (code?.pages) {
-      code.pages.forEach((page) => {
-        fileWriteRecuirsiveSync(
-          pathOut(config)(name, page.slug + '.html'),
-          page.body,
+  await Promise.all(
+    htmlFiles.map(async ({ name, code }) => {
+      if (code?.pages) {
+        await Promise.all(
+          code.pages.map(async (page) => {
+            await fileWriteRecuirsiveAsync(
+              pathOut(config)(name, page.slug + '.html'),
+              page.body,
+            );
+          }),
         );
-      });
-      return;
-    }
-    if (code?.content) {
-      fileWriteRecuirsiveSync(`${pathOut(config)(name)}.html`, code.content);
-    }
-  });
+        return;
+      }
+      if (code?.content) {
+        await fileWriteRecuirsiveAsync(
+          `${pathOut(config)(name)}.html`,
+          code.content,
+        );
+      }
+    }),
+  );
 };
 
-export const copyFile = (config: ConfigFile) => (relativeFilePath: string) => {
-  const f = fs.readFileSync(pathIn(config)(relativeFilePath));
-  fileWriteRecuirsiveSync(pathOut(config)(relativeFilePath), f);
+export const copyFile = (config: ConfigFile) => async (
+  relativeFilePath: string,
+) => {
+  const f = await fs.promises.readFile(pathIn(config)(relativeFilePath));
+  await fileWriteRecuirsiveAsync(pathOut(config)(relativeFilePath), f);
 };
 
-export const copyStaticFiles = (config: ConfigFile) => {
+export const copyStaticFiles = async (config: ConfigFile) => {
   const files = getFiles(config.in);
-  files
-    .filter((f) => !isDirectory(pathIn(config)(f)))
-    .filter(isStaticFile)
-    .forEach((f) => {
-      copyFile(config)(f);
-    });
+  await Promise.all(
+    files
+      .filter((f) => !isDirectory(pathIn(config)(f)))
+      .filter(isStaticFile)
+      .map((f) => copyFile(config)(f)),
+  );
 };
 
 export const cleanBuild = (config: ConfigFile) => {

@@ -13,7 +13,7 @@ export const watch = async () => {
   let liveServerRunning = false;
   const config = readConfig('./purplehaze.json');
   await preBuild(config);
-  copyStaticFiles(config);
+  await copyStaticFiles(config);
   await initBrowserBundler({
     config,
   });
@@ -61,7 +61,7 @@ export const watch = async () => {
         return;
       }
       if (isStaticFile(p)) {
-        copyStaticFiles(config);
+        await copyStaticFiles(config);
       }
     });
   block = false;

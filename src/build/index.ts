@@ -45,6 +45,6 @@ export const build = async () => {
     config,
   });
   await transformFiles({ config });
-  copyStaticFiles(config);
+  await copyStaticFiles(config);
   await close();
 };

@@ -1,4 +1,4 @@
-import { htmlContent } from 'src/ssg/markdown';
+import { htmlContent } from './ssg/markdown';
 
 export const routes = <Z extends typeof htmlContent>(htmlContent: Z) =>
   Object.entries(htmlContent)
