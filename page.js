@@ -1,10 +1,10 @@
+// src/page.tsx
 import React from "https://cdn.skypack.dev/react";
-import ReactDOM from "https://cdn.skypack.dev/react-dom";
 import {htmlContent} from "./ssg/markdown.js";
 import {Layout} from "./Layout.js";
 import {routes} from "./markdownRoutes.js";
 import {renderMarkdown} from "./mdtransform.js";
-const CustomPage = ({data: data2}) => {
+var CustomPage = ({data: data2}) => {
   return /* @__PURE__ */ React.createElement(Layout, {
     prefix: data2.prefix,
     activeRoute: data2.activeRoute,
@@ -16,29 +16,21 @@ const CustomPage = ({data: data2}) => {
     }
   }));
 };
-const data = () => {
+var data = () => {
   return {
     htmlContent,
     routes: routes(htmlContent),
     prefix: ssg.envs.PATH_PREFIX
   };
 };
-const hydrate = async (staticData) => ReactDOM.hydrate(/* @__PURE__ */ React.createElement(CustomPage, {
-  data: staticData
-}), document.body);
-const pages = async (staticData) => {
+var page_default = (staticData) => {
+  return /* @__PURE__ */ React.createElement(CustomPage, {
+    data: staticData
+  });
+};
+var pages = async (staticData) => {
   return await Promise.all(Object.entries(staticData.htmlContent).filter(([, v]) => !!v.data.link).map(async ([k, v], i) => {
-    const renderBody = document.createElement("div");
-    ReactDOM.render(/* @__PURE__ */ React.createElement(CustomPage, {
-      data: {
-        content: v,
-        routes: routes(staticData.htmlContent),
-        activeRoute: v.data.link,
-        prefix: staticData.prefix
-      }
-    }), renderBody);
     return {
-      body: renderBody.innerHTML,
       data: {
         content: v,
         routes: routes(staticData.htmlContent),
@@ -59,6 +51,6 @@ const pages = async (staticData) => {
 };
 export {
   data,
-  hydrate,
+  page_default as default,
   pages
 };

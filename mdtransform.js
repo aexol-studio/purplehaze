@@ -1,6 +1,7 @@
+// src/mdtransform.ts
 import hljs from "https://cdn.skypack.dev/highlight.js";
 import {Remarkable} from "https://cdn.skypack.dev/remarkable";
-const renderMarkdown = new Remarkable({
+var renderMarkdown = new Remarkable({
   highlight: function(str, lang) {
     if (lang && hljs.getLanguage(lang)) {
       try {

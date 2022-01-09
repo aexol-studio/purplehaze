@@ -1,10 +1,10 @@
+// src/index.tsx
 import React from "https://cdn.skypack.dev/react";
-import ReactDOM from "https://cdn.skypack.dev/react-dom";
 import {htmlContent} from "./ssg/markdown.js";
 import {Layout} from "./Layout.js";
 import {routes} from "./markdownRoutes.js";
 import {renderMarkdown} from "./mdtransform.js";
-const IndexPage = ({data: data2}) => {
+var src_default = (data2) => {
   return /* @__PURE__ */ React.createElement(Layout, {
     prefix: data2.prefix,
     routes: data2.routes
@@ -15,32 +15,21 @@ const IndexPage = ({data: data2}) => {
     }
   }));
 };
-const data = () => {
+var data = () => {
   return {
     content: htmlContent["markdown/index.md"],
     routes: routes(htmlContent),
     prefix: ssg.envs.PATH_PREFIX
   };
 };
-const head = () => {
-  return `
-    <link rel="stylesheet" href="./tw.css" />
-    <title>Purple haze docs</title>
-  `;
-};
-const hydrate = async (staticData) => ReactDOM.hydrate(/* @__PURE__ */ React.createElement(IndexPage, {
-  data: staticData
-}), document.body);
-var stdin_default = async (staticData) => {
-  const renderBody = document.createElement("div");
-  ReactDOM.render(/* @__PURE__ */ React.createElement(IndexPage, {
-    data: staticData
-  }), renderBody);
-  return renderBody.innerHTML;
+var head = () => {
+  return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("link", {
+    rel: "stylesheet",
+    href: "./tw.css"
+  }), /* @__PURE__ */ React.createElement("title", null, "Purple haze docs"));
 };
 export {
   data,
-  stdin_default as default,
-  head,
-  hydrate
+  src_default as default,
+  head
 };
