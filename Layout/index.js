@@ -1,4 +1,4 @@
-// src/Layout.tsx
+// src/Layout/index.tsx
 import React, {useState} from "https://cdn.skypack.dev/react";
 var GithubIcon = () => /* @__PURE__ */ React.createElement("svg", {
   xmlns: "http://www.w3.org/2000/svg",

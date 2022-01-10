@@ -1,7 +1,7 @@
 // src/index.tsx
 import React from "https://cdn.skypack.dev/react";
 import {htmlContent} from "./ssg/markdown.js";
-import {Layout} from "./Layout.js";
+import {Layout} from "./Layout/index.js";
 import {routes} from "./markdownRoutes.js";
 import {renderMarkdown} from "./mdtransform.js";
 var src_default = (data2) => {
