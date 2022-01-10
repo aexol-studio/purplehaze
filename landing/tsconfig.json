@@ -15,14 +15,11 @@
       "https://cdn.skypack.dev/react": [
         ".purplehaze/typings/react/index.d.ts"
       ],
-      "https://cdn.skypack.dev/remarkable": [
-        ".purplehaze/typings/remarkable/index.d.ts"
-      ],
       "https://cdn.skypack.dev/highlight.js": [
         ".purplehaze/typings/highlight.js/index.d.ts"
       ],
-      "https://cdn.skypack.dev/react-dom": [
-        ".purplehaze/typings/react-dom/index.d.ts"
+      "https://cdn.skypack.dev/remarkable": [
+        ".purplehaze/typings/remarkable/index.d.ts"
       ]
     }
   },

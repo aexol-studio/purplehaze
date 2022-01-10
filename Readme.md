@@ -55,3 +55,4 @@ Inspired by generative programming and weed :). So I was learning Elm language a
 - [x] generate TS Files from Markdown
 - [ ] css support
 - [ ] fetch accurate typings withe relative packages typings
+- [ ] create CI process description

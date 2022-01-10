@@ -1,6 +1,6 @@
 import React from 'https://cdn.skypack.dev/react';
 import { htmlContent } from './ssg/markdown';
-import { Layout } from './Layout';
+import { Layout } from './Layout/index';
 import { routes } from './markdownRoutes';
 import { renderMarkdown } from './mdtransform';
 

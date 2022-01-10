@@ -6,7 +6,9 @@ import { getTsConfig, updateTSConfig } from '@/transpilerConfig';
 import { pathGeneratedTypings } from '@/paths';
 import fs from 'fs';
 
-const URL_REGEX = new RegExp(/^import.*(https:\/\/.*)\/(.*)['|"]/gm);
+const URL_REGEX = new RegExp(
+  /(?:^[ \t]*|await\s)import.*(https:\/\/.*)\/(.*)['|"]/gm,
+);
 
 interface PackageDetails {
   packageName: string;
