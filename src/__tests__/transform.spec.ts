@@ -1,5 +1,5 @@
 import { ConfigFile } from '@/config';
-import { createTwinFile, hasTwinFile } from '@/transform';
+import { createTwinFile, hasTwinFile } from '@/transform/transformers/html';
 
 const paths = ['Detail.js', 'Detail.css', 'index.html', 'somemodule.js'];
 
