@@ -8,6 +8,15 @@ var htmlContent = {
     },
     "excerpt": ""
   },
+  "markdown/Routes.md": {
+    "content": "\nRoutes is a file generated for type safe routing inside ssg. It will generate routes for all the files containing `default` and `pages` export\n\n```ts\nexport const routes = {\n  'page/routes': '/page/routes',\n  'page/react': '/page/react',\n  'page/pages': '/page/pages',\n  'page/import-from-url': '/page/import-from-url',\n  'page/markdown': '/page/markdown',\n  'page/graphql': '/page/graphql',\n  'page/env-variables': '/page/env-variables',\n  'page/configuration': '/page/configuration',\n  'page/changelog': '/page/changelog',\n  index: '/index',\n} as const;\n```\n",
+    "data": {
+      "title": "Routes",
+      "link": "routes",
+      "order": 1.1
+    },
+    "excerpt": ""
+  },
   "markdown/React.md": {
     "content": "\nTo use `purplehaze` with `React` normally export a component as a default function consuming `data` function result. You can also return `React` component from head function\n\n```tsx\nimport React from 'https://cdn.skypack.dev/react';\nimport { htmlContent } from './ssg/markdown';\nimport { Layout } from './Layout';\nimport { routes } from './markdownRoutes';\nimport { renderMarkdown } from './mdtransform';\n\nexport default (data: DataType) => {\n  return (\n    <Layout prefix={data.prefix} routes={data.routes}>\n      <div\n        className=\"prose prose-lg\"\n        dangerouslySetInnerHTML={{\n          __html: renderMarkdown.render(data.content.content),\n        }}\n      ></div>\n    </Layout>\n  );\n};\n\nexport const data = () => {\n  return {\n    content: htmlContent['markdown/index.md'],\n    routes: routes(htmlContent),\n    prefix: ssg.envs.PATH_PREFIX,\n  };\n};\n\nexport const head = () => {\n  return (\n    <>\n      <link rel=\"stylesheet\" href=\"./tw.css\" />\n      <title>Purple haze docs</title>\n    </>\n  );\n};\n\ntype DataType = ReturnType<typeof data>;\n```\n",
     "data": {
@@ -72,7 +81,7 @@ var htmlContent = {
     "excerpt": ""
   },
   "markdown/Changelog.md": {
-    "content": "\n## 0.0.2\n\n- added full environment variables support\n\n## 0.0.3\n\n- generate output js scripts\n- added docs responsiveness\n\n## 0.0.4\n\n- removed basic helper functions\n- improved documentation\n- markdown transformer added\n\n## 0.0.5\n\n- Automatic import mapping to correct `js` esm exports\n- default react hydration functions\n- possibility to export default react components\n- changed pages behavior to use default export as body and feed only different data per page\n- promisified most code\n",
+    "content": "\n## 0.0.2\n\n- added full environment variables support\n\n## 0.0.3\n\n- generate output js scripts\n- added docs responsiveness\n\n## 0.0.4\n\n- removed basic helper functions\n- improved documentation\n- markdown transformer added\n\n## 0.0.5\n\n- Automatic import mapping to correct `js` esm exports\n- default react hydration functions\n- possibility to export default react components\n- changed pages behavior to use default export as body and feed only different data per page\n- promisified most code\n\n## 0.0.6\n\n- `ssg/routes.ts` file generation. It contains path to all `default` export files and `pages` exports\n",
     "data": {
       "link": "changelog",
       "title": "Changelog",
