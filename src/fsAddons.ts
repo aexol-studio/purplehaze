@@ -62,3 +62,17 @@ export const fileWriteRecuirsiveAsync = async (
   await mkFileDirSync(p);
   fs.promises.writeFile(p, data);
 };
+
+export const fileWriteRecuirsiveIfContentDifferent = async (
+  p: string,
+  data: string,
+) => {
+  await mkFileDirSync(p);
+  if (fs.existsSync(p)) {
+    const content = (await fs.promises.readFile(p)).toString('utf-8');
+    if (content !== data) {
+      return fs.promises.writeFile(p, data);
+    }
+  }
+  return fs.promises.writeFile(p, data);
+};

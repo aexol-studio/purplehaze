@@ -26,3 +26,7 @@ order: 99
 - possibility to export default react components
 - changed pages behavior to use default export as body and feed only different data per page
 - promisified most code
+
+## 0.0.6
+
+- `ssg/routes.ts` file generation. It contains path to all `default` export files and `pages` exports

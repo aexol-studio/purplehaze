@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import { bundle } from '@/transform/module';
 import { ConfigFile } from '@/config';
 import { GenerateGlobalTypings } from '@/transform/fn';
 import { calcTime, message } from '@/console';
@@ -11,7 +10,6 @@ import {
   isJSFile,
   isStaticFile,
   isTSFile,
-  fileRegex,
   isMd,
 } from '@/fsAddons';
 import { pathGenerated, pathIn, pathOut, pathSsg } from '@/paths';
@@ -19,6 +17,8 @@ import { transformMarkdownFiles } from '@/transform/transformers/markdown';
 import { transformTsx } from '@/transform/transformers/tsx';
 import { envTransformer } from '@/transform/transformers/env';
 import { PATH_GENERATED } from '@/constants';
+import { transformRoutes } from '@/transform/transformers/route';
+import { generateHtmlFiles } from '@/transform/transformers/html';
 
 const getFiles = (dir: string) => {
   const result = [];
@@ -49,51 +49,6 @@ export const readFiles = (matchFunction: (p: string) => boolean) => async (
     }
   }
   return allFiles;
-};
-
-export const createTwinFile = (fileToTransform: string, extension?: string) => {
-  const regexResult = fileToTransform.match(fileRegex);
-  if (!regexResult) {
-    throw new Error(
-      'Invalid file provided to function. Only accepting files matching mock regex',
-    );
-  }
-  const twinFileName = extension
-    ? `${regexResult[1]}.${extension}`
-    : regexResult[1];
-  return twinFileName;
-};
-
-export const hasTwinFile = (
-  fileToTransform: string,
-  config: ConfigFile,
-  extension: string,
-) => {
-  let twinFile: string | undefined;
-  const twinFileName = createTwinFile(fileToTransform, extension);
-  const hasCorrespondingTwinFile = fs.existsSync(pathIn(config)(twinFileName));
-  if (hasCorrespondingTwinFile) {
-    twinFile = twinFileName;
-  }
-  return twinFile;
-};
-
-export const injectHtmlFile = async ({
-  fileToTransform,
-  config,
-}: {
-  fileToTransform: string;
-  config: ConfigFile;
-}) => {
-  const cssFile = hasTwinFile(fileToTransform, config, 'css');
-  return {
-    name: createTwinFile(fileToTransform),
-    code: await bundle({
-      name: fileToTransform,
-      config: config,
-      css: cssFile,
-    }),
-  };
 };
 
 export const generateBasicTypingsFiles = async (config: ConfigFile) => {
@@ -149,41 +104,11 @@ export const transformFiles = async ({ config }: { config: ConfigFile }) => {
     rf.map((r) => r.content.toString('utf-8')),
   );
   message('Sending code to browser', 'yellowBright');
-  await generateHtmlFiles(config)(jsFiles);
+  const routes = await generateHtmlFiles(config)(jsFiles);
+  message('Generating routes', 'yellowBright');
+  await transformRoutes(config, routes);
   message('Code render successful', 'greenBright');
   end();
-};
-
-export const generateHtmlFiles = (config: ConfigFile) => async (
-  jsFiles: string[],
-) => {
-  const htmlFiles = (
-    await Promise.all(
-      jsFiles.map((f) => injectHtmlFile({ fileToTransform: f, config })),
-    )
-  ).filter((f) => f.code);
-  message(`Writing out ${htmlFiles.length} pages.`, 'yellow');
-  await Promise.all(
-    htmlFiles.map(async ({ name, code }) => {
-      if (code?.pages) {
-        await Promise.all(
-          code.pages.map(async (page) => {
-            await fileWriteRecuirsiveAsync(
-              pathOut(config)(name, page.slug + '.html'),
-              page.body,
-            );
-          }),
-        );
-        return;
-      }
-      if (code?.content) {
-        await fileWriteRecuirsiveAsync(
-          `${pathOut(config)(name)}.html`,
-          code.content,
-        );
-      }
-    }),
-  );
 };
 
 export const copyFile = (config: ConfigFile) => async (
