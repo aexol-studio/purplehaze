@@ -30,3 +30,7 @@ order: 99
 ## 0.0.6
 
 - `ssg/routes.ts` file generation. It contains path to all `default` export files and `pages` exports
+
+## 0.0.7
+
+- repaired `pages` hydration

@@ -76,3 +76,12 @@ export const fileWriteRecuirsiveIfContentDifferent = async (
   }
   return fs.promises.writeFile(p, data);
 };
+
+export const fileTouchSync = (p: string) => {
+  const time = new Date();
+  try {
+    fs.utimesSync(p, time, time);
+  } catch (err) {
+    fs.closeSync(fs.openSync(p, 'w'));
+  }
+};

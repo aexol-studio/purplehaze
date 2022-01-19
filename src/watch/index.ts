@@ -17,6 +17,18 @@ export const watch = async () => {
   await initBrowserBundler({
     config,
   });
+  await transformFiles({
+    config,
+  });
+  if (!liveServerRunning) {
+    liveServerRunning = true;
+    liveServer.start({
+      open: true,
+      logLevel: 0,
+      port: config.port,
+      root: config.out,
+    });
+  }
   chokidar
     .watch(`.env`, { interval: 10, ignoreInitial: true })
     .on('all', async (event, p) => {
@@ -32,6 +44,7 @@ export const watch = async () => {
   chokidar
     .watch(pathIn(config)(`**/*.{js,css,ts,tsx,jsx,md}`), {
       interval: 0, // No delay
+      ignoreInitial: true,
     })
     .on('all', async (event, p) => {
       if (event !== 'add' && event !== 'change') {
@@ -46,16 +59,8 @@ export const watch = async () => {
           block = true;
           await transformFiles({
             config,
+            fileChanged: p,
           });
-          if (!liveServerRunning) {
-            liveServerRunning = true;
-            liveServer.start({
-              open: true,
-              logLevel: 0,
-              port: config.port,
-              root: config.out,
-            });
-          }
           block = false;
         }
         return;

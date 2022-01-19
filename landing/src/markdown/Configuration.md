@@ -24,7 +24,7 @@ Config file can be generated or created manually. It should contain all the foll
 
 #### Typescript
 
-URL imports also works here. Of course you can still import relative modules.
+URL imports also work here. Of course you can still import relative modules.
 
 ```json
 {

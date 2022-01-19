@@ -1,10 +1,69 @@
 import { ConfigFile } from '@/config';
 import { message } from '@/console';
-import { fileRegex, fileWriteRecuirsiveAsync } from '@/fsAddons';
+import { fileRegex, fileTouchSync, fileWriteRecuirsiveAsync } from '@/fsAddons';
 import { pathIn, pathOut } from '@/paths';
-import { bundle } from '@/transform/module';
+import { bundle, Page } from '@/transform/module';
 import fs from 'fs';
 
+const writeHtmlFile = async ({
+  config,
+  name,
+  code,
+}: {
+  name: string;
+  config: ConfigFile;
+  code?: {
+    pages?: Page[];
+    content?: string;
+  };
+}) => {
+  const routes: Record<string, string> = {};
+  if (code?.pages) {
+    await Promise.all(
+      code.pages.map(async (page) => {
+        const route = [name, page.slug].join('/');
+        routes[route] = `/${route}`;
+        await fileWriteRecuirsiveAsync(
+          pathOut(config)(name, page.slug + '.html'),
+          page.body,
+        );
+      }),
+    );
+  }
+  if (code?.content) {
+    routes[name] = `/${name}`;
+    await fileWriteRecuirsiveAsync(
+      `${pathOut(config)(name)}.html`,
+      code.content,
+    );
+  }
+  return routes;
+};
+
+let routes: Record<string, string> = {};
+
+export const generateSingleHTMLFile = (config: ConfigFile) => async (
+  fileChanged: string,
+) => {
+  const singleFile = await injectHtmlFile({
+    fileToTransform: fileChanged,
+    config,
+  });
+  if (singleFile.code) {
+    routes = {
+      ...routes,
+      ...(await writeHtmlFile({
+        config,
+        name: singleFile.name,
+        code: singleFile.code,
+      })),
+    };
+  }
+  Object.keys(routes)
+    .map((k) => pathOut(config)(`${k}.html`))
+    .map(fileTouchSync);
+  return routes;
+};
 export const generateHtmlFiles = (config: ConfigFile) => async (
   jsFiles: string[],
 ) => {
@@ -14,31 +73,14 @@ export const generateHtmlFiles = (config: ConfigFile) => async (
     )
   ).filter((f) => f.code);
   message(`Writing out ${htmlFiles.length} pages.`, 'yellow');
-  const routes: Record<string, string> = {};
-  await Promise.all(
-    htmlFiles.map(async ({ name, code }) => {
-      if (code?.pages) {
-        await Promise.all(
-          code.pages.map(async (page) => {
-            const route = [name, page.slug].join('/');
-            routes[route] = `/${route}`;
-            await fileWriteRecuirsiveAsync(
-              pathOut(config)(name, page.slug + '.html'),
-              page.body,
-            );
-          }),
-        );
-        return;
-      }
-      if (code?.content) {
-        routes[name] = `/${name}`;
-        await fileWriteRecuirsiveAsync(
-          `${pathOut(config)(name)}.html`,
-          code.content,
-        );
-      }
-    }),
-  );
+  routes = (
+    await Promise.all(htmlFiles.map((v) => writeHtmlFile({ config, ...v })))
+  ).reduce((a, b) => {
+    a = {
+      ...b,
+    };
+    return a;
+  });
   return routes;
 };
 

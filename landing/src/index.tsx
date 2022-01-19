@@ -29,7 +29,7 @@ export const head = () => {
   return (
     <>
       <link rel="stylesheet" href="./tw.css" />
-      <title>Purple haze docs</title>
+      <title>Purple haze docs 0.0.5</title>
     </>
   );
 };

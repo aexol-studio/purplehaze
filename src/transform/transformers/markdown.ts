@@ -8,11 +8,11 @@ import { ConfigFile } from '@/config';
 export const transformMarkdownFiles = (config: ConfigFile) => async (
   mdFiles: string[],
 ) => {
-  const generatedMdLib: Record<
-    string,
-    Pick<ReturnType<typeof matter>, 'content' | 'data' | 'excerpt'>
-  > = {};
   try {
+    const generatedMdLib: Record<
+      string,
+      Pick<ReturnType<typeof matter>, 'content' | 'data' | 'excerpt'>
+    > = {};
     await Promise.all(
       mdFiles.map(async (mdFile) => {
         const m = matter(await fs.promises.readFile(pathIn(config)(mdFile)));
@@ -23,18 +23,18 @@ export const transformMarkdownFiles = (config: ConfigFile) => async (
         };
       }),
     );
+    await fileWriteRecuirsiveAsync(
+      pathSsg(config)('markdown.ts'),
+      `export const htmlContent = ${JSON.stringify(
+        generatedMdLib,
+        null,
+        4,
+      )} as const`,
+    );
   } catch (error) {
     if (error instanceof Error) {
       message(error.message, 'red');
     }
     return;
   }
-  await fileWriteRecuirsiveAsync(
-    pathSsg(config)('markdown.ts'),
-    `export const htmlContent = ${JSON.stringify(
-      generatedMdLib,
-      null,
-      4,
-    )} as const`,
-  );
 };

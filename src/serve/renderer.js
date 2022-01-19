@@ -53,7 +53,6 @@ ws.onmessage = async (ev) => {
         const data = c.data && (await c.data());
         let pages = c.pages ? await c.pages(data) : '';
         if (pages && Array.isArray(pages) && pages.length > 0) {
-          let hydratePages = false;
           pages = await Promise.all(
             pages.map(async (p) => {
               if (!p.body && !c.default) {
@@ -82,7 +81,6 @@ ws.onmessage = async (ev) => {
                 data,
                 head: '',
                 pages,
-                hydrate: hydratePages,
               },
               operationId,
             }),

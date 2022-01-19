@@ -18,6 +18,7 @@ export interface Page {
   body: string;
   data?: any;
   head?: string;
+  hydrate?: boolean;
 }
 interface EventResult {
   body?: string;
@@ -96,7 +97,6 @@ export const bundle = async ({
           ...b,
           scriptName: path.join('..', name),
           cssName: css ? path.join('..', css) : undefined,
-          hydrate: socketResult.hydrate,
         }),
       })),
     };
@@ -108,7 +108,6 @@ export const bundle = async ({
       head: socketResult.head as string,
       scriptName: name,
       cssName: css,
-      hydrate: socketResult.hydrate,
     }),
   };
 };

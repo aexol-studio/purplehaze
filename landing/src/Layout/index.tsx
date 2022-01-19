@@ -31,7 +31,7 @@ export const Layout: React.FC<{
         <span className="text-gray-400 block ml-2 text-md mt-1">
           Bundler that puffs in the browser
         </span>
-        <span className="ml-auto mr-2 text-gray-500">0.0.6</span>
+        <span className="ml-auto mr-2 text-gray-500">0.0.7</span>
         <a
           href="https://github.com/aexol-studio/purplehaze"
           className="text-purple-500"

@@ -18,7 +18,10 @@ import { transformTsx } from '@/transform/transformers/tsx';
 import { envTransformer } from '@/transform/transformers/env';
 import { PATH_GENERATED } from '@/constants';
 import { transformRoutes } from '@/transform/transformers/route';
-import { generateHtmlFiles } from '@/transform/transformers/html';
+import {
+  generateHtmlFiles,
+  generateSingleHTMLFile,
+} from '@/transform/transformers/html';
 
 const getFiles = (dir: string) => {
   const result = [];
@@ -72,17 +75,43 @@ export const generateTypingsFiles = async ({
   await fileWriteRecuirsiveAsync(ssgPath(name, 'index.ts'), typings);
 };
 
-export const transformFiles = async ({ config }: { config: ConfigFile }) => {
+export const transformFiles = async ({
+  config,
+  fileChanged,
+}: {
+  config: ConfigFile;
+  fileChanged?: string;
+}) => {
   const { end } = calcTime('Build time', 'blueBright');
-  const mdFiles = await readFiles(isMd)(config.in);
-  if (mdFiles.length > 0) {
-    await transformMarkdownFiles(config)(mdFiles);
+  if (fileChanged) {
+    const [isTypescript, isJavascript] = [
+      isTSFile(fileChanged),
+      isJSFile(fileChanged),
+    ];
+    if (isTypescript || isJavascript) {
+      const stripIn = fileChanged
+        .substring(config.in.replace(/^\.?\.?\/?/, '').length)
+        .replace(/^\//, '');
+      await transformTsx(config)([stripIn]);
+      const jsFile = stripIn.replace(/x$/, '').replace(/\.ts$/, '.js');
+      await fileWriteRecuirsiveAsync(
+        pathOut(config)(jsFile),
+        await fs.promises.readFile(pathGenerated(jsFile)),
+      );
+      message('Sending code to browser', 'yellowBright');
+      const routes = await generateSingleHTMLFile(config)(jsFile);
+      message('Generating routes', 'yellowBright');
+      await transformRoutes(config, routes);
+      message('Code render successful', 'greenBright');
+      end();
+      return;
+    }
   }
+  const mdFiles = await readFiles(isMd)(config.in);
+  await transformMarkdownFiles(config)(mdFiles);
 
   const tsFiles = await readFiles(isTSFile)(config.in);
-  if (tsFiles.length > 0) {
-    await transformTsx(config)(tsFiles);
-  }
+  await transformTsx(config)(tsFiles);
 
   const jsFiles = await readFiles(isJSFile)(PATH_GENERATED);
 
@@ -104,7 +133,9 @@ export const transformFiles = async ({ config }: { config: ConfigFile }) => {
     rf.map((r) => r.content.toString('utf-8')),
   );
   message('Sending code to browser', 'yellowBright');
-  const routes = await generateHtmlFiles(config)(jsFiles);
+  const routes = await generateHtmlFiles(config)(
+    await readFiles(isJSFile)(PATH_GENERATED),
+  );
   message('Generating routes', 'yellowBright');
   await transformRoutes(config, routes);
   message('Code render successful', 'greenBright');
