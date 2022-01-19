@@ -26,7 +26,7 @@ var head = () => {
   return /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("link", {
     rel: "stylesheet",
     href: "./tw.css"
-  }), /* @__PURE__ */ React.createElement("title", null, "Purple haze docs"));
+  }), /* @__PURE__ */ React.createElement("title", null, "Purple haze docs 0.0.5"));
 };
 export {
   data,
