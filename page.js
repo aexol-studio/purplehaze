@@ -20,7 +20,8 @@ var data = () => {
   return {
     htmlContent,
     routes: routes(htmlContent),
-    prefix: ssg.envs.PATH_PREFIX
+    prefix: ssg.envs.PATH_PREFIX,
+    version: ssg.envs.VERSION
   };
 };
 var page_default = (staticData) => {

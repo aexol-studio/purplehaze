@@ -13,7 +13,7 @@ var GithubIcon = () => /* @__PURE__ */ React.createElement("svg", {
 }, /* @__PURE__ */ React.createElement("path", {
   d: "M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
 }));
-var Layout = ({children, routes, activeRoute, prefix = ""}) => {
+var Layout = ({children, routes, activeRoute, prefix = "", version}) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return /* @__PURE__ */ React.createElement("div", {
     className: "h-full flex flex-col"
@@ -26,7 +26,7 @@ var Layout = ({children, routes, activeRoute, prefix = ""}) => {
     className: "text-gray-400 block ml-2 text-md mt-1"
   }, "Bundler that puffs in the browser"), /* @__PURE__ */ React.createElement("span", {
     className: "ml-auto mr-2 text-gray-500"
-  }, "0.0.7"), /* @__PURE__ */ React.createElement("a", {
+  }, version), /* @__PURE__ */ React.createElement("a", {
     href: "https://github.com/aexol-studio/purplehaze",
     className: "text-purple-500",
     title: "Github repository"
@@ -52,7 +52,7 @@ var Layout = ({children, routes, activeRoute, prefix = ""}) => {
   }, r.title))), /* @__PURE__ */ React.createElement("div", {
     className: "py-6 px-10 w-80 sm:block hidden  border-r border-purple-200"
   }, routes.map((r) => /* @__PURE__ */ React.createElement("a", {
-    className: `transition-all block py-3 text-md font-medium${activeRoute === r.link ? " text-purple-600" : " text-gray-600 hover:text-purple-600"}`,
+    className: `transition-all block py-4 text-md font-medium${activeRoute === r.link ? " text-purple-600" : " text-gray-600 hover:text-purple-600"}`,
     href: `${prefix}/page/${r.link}.html`
   }, r.title))), /* @__PURE__ */ React.createElement("div", {
     className: "container mx-auto px-20 py-6 pb-20 h-full overflow-auto"
