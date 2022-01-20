@@ -34,3 +34,8 @@ order: 99
 ## 0.0.7
 
 - repaired `pages` hydration
+
+## 0.0.8
+
+- regenerate html files on jss files without export
+- added jsx as default

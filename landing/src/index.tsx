@@ -6,7 +6,7 @@ import { renderMarkdown } from './mdtransform';
 
 export default (data: DataType) => {
   return (
-    <Layout prefix={data.prefix} routes={data.routes}>
+    <Layout version={data.version} prefix={data.prefix} routes={data.routes}>
       <div
         className="prose prose-lg"
         dangerouslySetInnerHTML={{
@@ -22,14 +22,15 @@ export const data = () => {
     content: htmlContent['markdown/index.md'],
     routes: routes(htmlContent),
     prefix: ssg.envs.PATH_PREFIX,
+    version: ssg.envs.VERSION,
   };
 };
 
-export const head = () => {
+export const head = (data: DataType) => {
   return (
     <>
       <link rel="stylesheet" href="./tw.css" />
-      <title>Purple haze docs 0.0.5</title>
+      <title>Purple haze docs {data.version}</title>
     </>
   );
 };

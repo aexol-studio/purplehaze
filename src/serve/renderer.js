@@ -60,16 +60,10 @@ ws.onmessage = async (ev) => {
                   'Dynamic page generation needs either `body` assigned to each page object or export default function consuming page data.',
                 );
               }
-              let b = p.body;
-              if (!b) {
-                return composeRenderResult({
-                  ...p,
-                  body: await c.default(p.data),
-                });
-              }
               return composeRenderResult({
                 ...p,
-                body: b,
+                body: p.body || (await c.default(p.data)),
+                head: p.head || (c.head ? await c.head(p.data) : ''),
               });
             }),
           );
@@ -88,7 +82,7 @@ ws.onmessage = async (ev) => {
           return;
         }
         let body = c.default ? await c.default(data) : '';
-        let head = c.head ? await c.head() : '';
+        let head = c.head ? await c.head(data) : '';
         ws.send(
           JSON.stringify(
             await renderEvent(operationId, {

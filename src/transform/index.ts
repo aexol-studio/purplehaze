@@ -100,11 +100,13 @@ export const transformFiles = async ({
       );
       message('Sending code to browser', 'yellowBright');
       const routes = await generateSingleHTMLFile(config)(jsFile);
-      message('Generating routes', 'yellowBright');
-      await transformRoutes(config, routes);
-      message('Code render successful', 'greenBright');
-      end();
-      return;
+      if (routes) {
+        message('Generating routes', 'yellowBright');
+        await transformRoutes(config, routes);
+        message('Code render successful', 'greenBright');
+        end();
+        return;
+      }
     }
   }
   const mdFiles = await readFiles(isMd)(config.in);

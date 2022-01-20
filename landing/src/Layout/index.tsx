@@ -20,7 +20,8 @@ export const Layout: React.FC<{
   routes: Array<Route>;
   activeRoute?: string;
   prefix?: string;
-}> = ({ children, routes, activeRoute, prefix = '' }) => {
+  version: string;
+}> = ({ children, routes, activeRoute, prefix = '', version }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
     <div className="h-full flex flex-col">
@@ -31,7 +32,7 @@ export const Layout: React.FC<{
         <span className="text-gray-400 block ml-2 text-md mt-1">
           Bundler that puffs in the browser
         </span>
-        <span className="ml-auto mr-2 text-gray-500">0.0.7</span>
+        <span className="ml-auto mr-2 text-gray-500">{version}</span>
         <a
           href="https://github.com/aexol-studio/purplehaze"
           className="text-purple-500"
@@ -72,7 +73,7 @@ export const Layout: React.FC<{
         <div className="py-6 px-10 w-80 sm:block hidden  border-r border-purple-200">
           {routes.map((r) => (
             <a
-              className={`transition-all block py-3 text-md font-medium${
+              className={`transition-all block py-4 text-md font-medium${
                 activeRoute === r.link
                   ? ' text-purple-600'
                   : ' text-gray-600 hover:text-purple-600'

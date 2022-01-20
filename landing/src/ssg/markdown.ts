@@ -43,21 +43,21 @@ export const htmlContent = {
         },
         "excerpt": ""
     },
-    "markdown/Markdown.md": {
-        "content": "\nMarkdown files are automatically transformed to one `markdown.ts` file. You can use its content later one inside your `ts` components and pages.\n\n```mdx\n---\nlink: hello\n---\n\n# Hello world\n\nHello there\n```\n\nWill be transformed to\n\n```ts\nexport const htmlContent = {\n  'markdown/index.md': {\n    content: '\\n# Hello world\\n\\nHello there',\n    data: {\n      link: 'hello',\n    },\n    excerpt: '',\n  },\n};\n```\n",
-        "data": {
-            "title": "Markdown",
-            "link": "markdown",
-            "order": 5
-        },
-        "excerpt": ""
-    },
     "markdown/GraphQL.md": {
         "content": "\nWorks like fetch to GraphQL, where you need to provide host and/or options to receive fully Autocompleted client for schema url from your config.\n\n```js\nimport { Chain } from './ssg/main-schema/index.js';\nconst graphQLClient = Chain(ssg.config.graphql['main-schema'].url);\n\nconst response = await graphQLClient.query({ people: true });\n```\n",
         "data": {
             "link": "graphql",
             "title": "GraphQL",
             "order": 4
+        },
+        "excerpt": ""
+    },
+    "markdown/Markdown.md": {
+        "content": "\nMarkdown files are automatically transformed to one `markdown.ts` file. You can use its content later one inside your `ts` components and pages.\n\n```mdx\n---\nlink: hello\n---\n\n# Hello world\n\nHello there\n```\n\nWill be transformed to\n\n```ts\nexport const htmlContent = {\n  'markdown/index.md': {\n    content: '\\n# Hello world\\n\\nHello there',\n    data: {\n      link: 'hello',\n    },\n    excerpt: '',\n  },\n};\n```\n",
+        "data": {
+            "title": "Markdown",
+            "link": "markdown",
+            "order": 5
         },
         "excerpt": ""
     },
@@ -80,7 +80,7 @@ export const htmlContent = {
         "excerpt": ""
     },
     "markdown/Changelog.md": {
-        "content": "\n## 0.0.2\n\n- added full environment variables support\n\n## 0.0.3\n\n- generate output js scripts\n- added docs responsiveness\n\n## 0.0.4\n\n- removed basic helper functions\n- improved documentation\n- markdown transformer added\n\n## 0.0.5\n\n- Automatic import mapping to correct `js` esm exports\n- default react hydration functions\n- possibility to export default react components\n- changed pages behavior to use default export as body and feed only different data per page\n- promisified most code\n\n## 0.0.6\n\n- `ssg/routes.ts` file generation. It contains path to all `default` export files and `pages` exports\n",
+        "content": "\n## 0.0.2\n\n- added full environment variables support\n\n## 0.0.3\n\n- generate output js scripts\n- added docs responsiveness\n\n## 0.0.4\n\n- removed basic helper functions\n- improved documentation\n- markdown transformer added\n\n## 0.0.5\n\n- Automatic import mapping to correct `js` esm exports\n- default react hydration functions\n- possibility to export default react components\n- changed pages behavior to use default export as body and feed only different data per page\n- promisified most code\n\n## 0.0.6\n\n- `ssg/routes.ts` file generation. It contains path to all `default` export files and `pages` exports\n\n## 0.0.7\n\n- repaired `pages` hydration\n\n## 0.0.8\n\n- regenerate html files on jss files without export\n- added jsx as default\n",
         "data": {
             "link": "changelog",
             "title": "Changelog",

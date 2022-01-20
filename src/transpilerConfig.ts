@@ -15,6 +15,7 @@ export const TSConfig = () => ({
     forceConsistentCasingInFileNames: true /* Disallow inconsistently-cased references to the same file. */,
     allowJs: true,
     noEmit: true,
+    jsx: 'react',
     baseUrl: '' /* leave or change to ./ for url imports to work */,
   },
 });

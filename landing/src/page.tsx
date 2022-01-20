@@ -33,6 +33,7 @@ export const data = () => {
     htmlContent,
     routes: routes(htmlContent),
     prefix: ssg.envs.PATH_PREFIX,
+    version: ssg.envs.VERSION,
   };
 };
 

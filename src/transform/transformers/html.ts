@@ -49,16 +49,17 @@ export const generateSingleHTMLFile = (config: ConfigFile) => async (
     fileToTransform: fileChanged,
     config,
   });
-  if (singleFile.code) {
-    routes = {
-      ...routes,
-      ...(await writeHtmlFile({
-        config,
-        name: singleFile.name,
-        code: singleFile.code,
-      })),
-    };
+  if (!singleFile.code) {
+    return;
   }
+  routes = {
+    ...routes,
+    ...(await writeHtmlFile({
+      config,
+      name: singleFile.name,
+      code: singleFile.code,
+    })),
+  };
   Object.keys(routes)
     .map((k) => pathOut(config)(`${k}.html`))
     .map(fileTouchSync);

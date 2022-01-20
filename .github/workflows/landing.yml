@@ -13,6 +13,7 @@ jobs:
         run: npm i && npm run build && npm run landing:build
         env:
           PATH_PREFIX: /purplehaze
+          VERSION: 0.0.8
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
