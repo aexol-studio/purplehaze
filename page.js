@@ -8,7 +8,8 @@ var CustomPage = ({data: data2}) => {
   return /* @__PURE__ */ React.createElement(Layout, {
     prefix: data2.prefix,
     activeRoute: data2.activeRoute,
-    routes: data2.routes
+    routes: data2.routes,
+    version: data2.version
   }, /* @__PURE__ */ React.createElement("div", {
     className: "prose prose-lg",
     dangerouslySetInnerHTML: {
@@ -36,7 +37,8 @@ var pages = async (staticData) => {
         content: v,
         routes: routes(staticData.htmlContent),
         activeRoute: v.data.link,
-        prefix: staticData.prefix
+        prefix: staticData.prefix,
+        version: staticData.version
       },
       slug: v.data.link,
       head: `
