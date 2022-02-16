@@ -16,6 +16,7 @@ declare const ssg: {"envs": {"SHELL": string;
 "LC_NAME": string;
 "SSH_AUTH_SOCK": string;
 "BREAKPAD_DUMP_LOCATION": string;
+"COLOR": string;
 "DESKTOP_SESSION": string;
 "LC_MONETARY": string;
 "SSH_AGENT_PID": string;

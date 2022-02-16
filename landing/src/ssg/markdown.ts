@@ -43,21 +43,21 @@ export const htmlContent = {
         },
         "excerpt": ""
     },
-    "markdown/GraphQL.md": {
-        "content": "\nWorks like fetch to GraphQL, where you need to provide host and/or options to receive fully Autocompleted client for schema url from your config.\n\n```js\nimport { Chain } from './ssg/main-schema/index.js';\nconst graphQLClient = Chain(ssg.config.graphql['main-schema'].url);\n\nconst response = await graphQLClient.query({ people: true });\n```\n",
-        "data": {
-            "link": "graphql",
-            "title": "GraphQL",
-            "order": 4
-        },
-        "excerpt": ""
-    },
     "markdown/Markdown.md": {
         "content": "\nMarkdown files are automatically transformed to one `markdown.ts` file. You can use its content later one inside your `ts` components and pages.\n\n```mdx\n---\nlink: hello\n---\n\n# Hello world\n\nHello there\n```\n\nWill be transformed to\n\n```ts\nexport const htmlContent = {\n  'markdown/index.md': {\n    content: '\\n# Hello world\\n\\nHello there',\n    data: {\n      link: 'hello',\n    },\n    excerpt: '',\n  },\n};\n```\n",
         "data": {
             "title": "Markdown",
             "link": "markdown",
             "order": 5
+        },
+        "excerpt": ""
+    },
+    "markdown/GraphQL.md": {
+        "content": "\nWorks like fetch to GraphQL, where you need to provide host and/or options to receive fully Autocompleted client for schema url from your config.\n\n```js\nimport { Chain } from './ssg/main-schema/index.js';\nconst graphQLClient = Chain(ssg.config.graphql['main-schema'].url);\n\nconst response = await graphQLClient.query({ people: true });\n```\n",
+        "data": {
+            "link": "graphql",
+            "title": "GraphQL",
+            "order": 4
         },
         "excerpt": ""
     },

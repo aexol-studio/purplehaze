@@ -18,10 +18,7 @@ import { transformTsx } from '@/transform/transformers/tsx';
 import { envTransformer } from '@/transform/transformers/env';
 import { PATH_GENERATED } from '@/constants';
 import { transformRoutes } from '@/transform/transformers/route';
-import {
-  generateHtmlFiles,
-  generateSingleHTMLFile,
-} from '@/transform/transformers/html';
+import { generateHtmlFiles } from '@/transform/transformers/html';
 
 const getFiles = (dir: string) => {
   const result = [];
@@ -83,32 +80,7 @@ export const transformFiles = async ({
   fileChanged?: string;
 }) => {
   const { end } = calcTime('Build time', 'blueBright');
-  if (fileChanged) {
-    const [isTypescript, isJavascript] = [
-      isTSFile(fileChanged),
-      isJSFile(fileChanged),
-    ];
-    if (isTypescript || isJavascript) {
-      const stripIn = fileChanged
-        .substring(config.in.replace(/^\.?\.?\/?/, '').length)
-        .replace(/^\//, '');
-      await transformTsx(config)([stripIn]);
-      const jsFile = stripIn.replace(/x$/, '').replace(/\.ts$/, '.js');
-      await fileWriteRecuirsiveAsync(
-        pathOut(config)(jsFile),
-        await fs.promises.readFile(pathGenerated(jsFile)),
-      );
-      message('Sending code to browser', 'yellowBright');
-      const routes = await generateSingleHTMLFile(config)(jsFile);
-      if (routes) {
-        message('Generating routes', 'yellowBright');
-        await transformRoutes(config, routes);
-        message('Code render successful', 'greenBright');
-        end();
-        return;
-      }
-    }
-  }
+
   const mdFiles = await readFiles(isMd)(config.in);
   await transformMarkdownFiles(config)(mdFiles);
 

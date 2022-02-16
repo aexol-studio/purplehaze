@@ -1,7 +1,7 @@
 import { preBuild } from '@/build';
 import { readConfig } from '@/config';
 import { isJSFile, isTSFile, isMd, isStaticFile, isEnv } from '@/fsAddons';
-import { pathIn } from '@/paths';
+import { pathIn, pathOut } from '@/paths';
 import { initBrowserBundler } from '@/serve';
 import { copyStaticFiles, transformFiles } from '@/transform';
 import chokidar from 'chokidar';
@@ -27,6 +27,7 @@ export const watch = async () => {
       logLevel: 0,
       port: config.port,
       root: config.out,
+      ...({ watch: [pathOut(config)('**/*.html')] } as any),
     });
   }
   chokidar

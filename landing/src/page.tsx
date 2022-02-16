@@ -10,6 +10,7 @@ const CustomPage: React.FC<{
     routes: DataType['routes'];
     activeRoute?: string;
     prefix?: string;
+    version: string;
   };
 }> = ({ data }) => {
   return (
@@ -17,6 +18,7 @@ const CustomPage: React.FC<{
       prefix={data.prefix}
       activeRoute={data.activeRoute}
       routes={data.routes}
+      version={data.version}
     >
       <div
         className="prose prose-lg"
@@ -44,6 +46,7 @@ export default (staticData: {
   routes: DataType['routes'];
   activeRoute?: string;
   prefix?: string;
+  version: string;
 }) => {
   return <CustomPage data={staticData} />;
 };
@@ -59,6 +62,7 @@ export const pages = async (staticData: DataType) => {
             routes: routes(staticData.htmlContent),
             activeRoute: v.data.link,
             prefix: staticData.prefix,
+            version: staticData.version,
           },
           slug: v.data.link,
           head: `

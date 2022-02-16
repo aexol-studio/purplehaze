@@ -1,6 +1,6 @@
 {
   "name": "purplehaze",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "Bundler working in browser. Generating lots of stuff to help making frontend. Elm pages inspired",
   "main": "lib/index.js",
   "scripts": {
@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",
-    "@types/live-server": "^1.2.0",
+    "@types/live-server": "^1.2.1",
     "@types/node-fetch": "^2.5.9",
     "@types/websocket": "^1.0.2",
     "@types/ws": "^7.4.1",
