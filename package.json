@@ -1,6 +1,6 @@
 {
   "name": "purplehaze",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Bundler working in browser. Generating lots of stuff to help making frontend. Elm pages inspired",
   "main": "lib/index.js",
   "scripts": {

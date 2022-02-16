@@ -1,6 +1,6 @@
 import { ConfigFile } from '@/config';
 import { message } from '@/console';
-import { fileRegex, fileTouchSync, fileWriteRecuirsiveAsync } from '@/fsAddons';
+import { fileRegex, fileWriteRecuirsiveAsync } from '@/fsAddons';
 import { pathIn, pathOut } from '@/paths';
 import { bundle, Page } from '@/transform/module';
 import fs from 'fs';
@@ -40,31 +40,6 @@ const writeHtmlFile = async ({
   return routes;
 };
 
-let routes: Record<string, string> = {};
-
-export const generateSingleHTMLFile = (config: ConfigFile) => async (
-  fileChanged: string,
-) => {
-  const singleFile = await injectHtmlFile({
-    fileToTransform: fileChanged,
-    config,
-  });
-  if (!singleFile.code) {
-    return;
-  }
-  routes = {
-    ...routes,
-    ...(await writeHtmlFile({
-      config,
-      name: singleFile.name,
-      code: singleFile.code,
-    })),
-  };
-  Object.keys(routes)
-    .map((k) => pathOut(config)(`${k}.html`))
-    .map(fileTouchSync);
-  return routes;
-};
 export const generateHtmlFiles = (config: ConfigFile) => async (
   jsFiles: string[],
 ) => {
@@ -74,10 +49,11 @@ export const generateHtmlFiles = (config: ConfigFile) => async (
     )
   ).filter((f) => f.code);
   message(`Writing out ${htmlFiles.length} pages.`, 'yellow');
-  routes = (
+  const routes = (
     await Promise.all(htmlFiles.map((v) => writeHtmlFile({ config, ...v })))
   ).reduce((a, b) => {
     a = {
+      ...a,
       ...b,
     };
     return a;
